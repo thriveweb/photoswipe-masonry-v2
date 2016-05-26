@@ -36,6 +36,7 @@ Some other features include:
 
 See a [demo here](http://thriveweb.com.au/the-lab/PhotoSwipe/ "PhotoSwipeWP")
 
+
 == Installation ==
 
 1. Upload `/photoSwipe-masonry/` to the `/wp-content/plugins/` directory
