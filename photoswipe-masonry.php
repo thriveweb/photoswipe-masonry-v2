@@ -6,7 +6,7 @@ Description: This is a image gallery plugin for WordPress built using PhotoSwipe
 <a href="http://photoswipe.com/">PhotoSwipe</a>
 Author: Dean Oakley
 Author URI: http://thriveweb.com.au/
-Version: 1.2.0
+Version: 1.2.1
 Text Domain: photoswipe-masonry
 */
 
@@ -305,7 +305,7 @@ function photoswipe_scripts_method() {
 	//Core JS file
 	wp_enqueue_script( 'photoswipe', 			$photoswipe_wp_plugin_path . '/photoswipe-dist/photoswipe.min.js');
 
-	wp_enqueue_script( 'photoswipe-masonry-js', $photoswipe_wp_plugin_path . '/photoswipe-masonry.js');
+	wp_enqueue_script( 'photoswipe-masonry-js', $photoswipe_wp_plugin_path . '/photoswipe-masonry.min.js');
 
 	//UI JS file
 	wp_enqueue_script( 'photoswipe-ui-default', $photoswipe_wp_plugin_path . '/photoswipe-dist/photoswipe-ui-default.min.js');
@@ -379,85 +379,82 @@ function photoswipe_shortcode( $attr ) {
         $itemwidth = $columns > 0 ? floor(100/$columns) : 100;
 
 
-		// Breaks with yoast social options
-		//if( $photoswipe_count < 2){
+		$output_buffer .= "
 
-			$output_buffer .= "
+		<style type='text/css'>
 
-			<style type='text/css'>
+			/* PhotoSwipe Plugin */
+			.photoswipe_gallery {
+				margin: auto;
+				padding-bottom:40px;
 
-				/* PhotoSwipe Plugin */
-				.photoswipe_gallery {
-					margin: auto;
-					padding-bottom:40px;
+				-webkit-transition: all 0.4s ease;
+				-moz-transition: all 0.4s ease;
+				-o-transition: all 0.4s ease;
+				transition: all 0.4s ease;
 
-					-webkit-transition: all 0.4s ease;
-					-moz-transition: all 0.4s ease;
-					-o-transition: all 0.4s ease;
-					transition: all 0.4s ease;
-
-					opacity:0.1;
-					";
-
-					if($options['use_masonry']) $output_buffer .="opacity:1; text-align:center;";
-
-					$output_buffer .= "
-
-				}
-
-				.photoswipe_gallery.photoswipe_showme{
-					opacity:1;
-				}
-
-				.photoswipe_gallery figure {
-					float: left;
-
-					";
-
-					if($options['use_masonry']) $output_buffer .="float:none; display:inline-block;;";
-
-					$output_buffer .= "
-
-					text-align: center;
-					width: ".$options['thumbnail_width']."px;
-
-					padding:5px;
-					margin: 0px;
-					box-sizing:border-box;
-				}
-				.photoswipe_gallery a{
-					display:block;
-				}
-
-				.photoswipe_gallery img {
-					margin:auto;
-					max-width:100%;
-					width: auto;
-					height: auto;
-					border: 0;
-				}
-				.photoswipe_gallery figure figcaption{
-					font-size:13px;
-				}
-
-				.msnry{
-					margin:auto;
-				}
+				opacity:0.1;
 				";
 
-				if(!$options['show_captions']) $output_buffer .="
-
-				.photoswipe-gallery-caption{
-					display:none;
-				}
-
-				";
+				if($options['use_masonry']) $output_buffer .="opacity:1; text-align:center;";
 
 				$output_buffer .= "
-			</style>";
 
-		//}
+			}
 
+			.photoswipe_gallery.photoswipe_showme{
+				opacity:1;
+			}
+
+			.photoswipe_gallery figure {
+				float: left;
+
+				";
+
+				if($options['use_masonry']) $output_buffer .="float:none; display:inline-block;;";
+
+				$output_buffer .= "
+
+				text-align: center;
+				width: ".$options['thumbnail_width']."px;
+
+				padding:5px;
+				margin: 0px;
+				box-sizing:border-box;
+			}
+			.photoswipe_gallery a{
+				display:block;
+			}
+
+			.photoswipe_gallery img {
+				margin:auto;
+				max-width:100%;
+				width: auto;
+				height: auto;
+				border: 0;
+			}
+			.photoswipe_gallery figure figcaption{
+				font-size:13px;
+			}
+
+			.msnry{
+				margin:auto;
+			}
+			.pswp__caption__center{
+				text-align: center;
+			}
+			";
+
+			if(!$options['show_captions']) $output_buffer .="
+
+			.photoswipe-gallery-caption{
+				display:none;
+			}
+
+			";
+
+			$output_buffer .= "
+		</style>";
 
 		$size_class = sanitize_html_class( $args['size'] );
 		$output_buffer .=' <div style="clear:both"></div>
@@ -481,7 +478,7 @@ function photoswipe_shortcode( $attr ) {
 
 				$output_buffer .='
 				<figure class="msnry_item" itemscope itemtype="http://schema.org/ImageObject">
-					<a href="'. $full[0] .'" itemprop="contentUrl" data-size="'.$full[1].'x'.$full[2].'">
+					<a href="'. $full[0] .'" itemprop="contentUrl" data-size="'.$full[1].'x'.$full[2].'" data-caption="'. $image_caption .'" >
 				        <img src='. $thumb[0] .' itemprop="thumbnail" alt="'.$image_alttext.'"  />
 				    </a>
 				    <figcaption class="photoswipe-gallery-caption" >'. $image_caption .'</figcaption>
