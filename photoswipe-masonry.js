@@ -3,7 +3,10 @@ jQuery(function($) {
 	var $pswp = $('.pswp')[0];
     var image = [];
 
-    jQuery('.photoswipe_gallery').each( function() {
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	// Gallery
+    $('.psgal').each( function() {
 
         var $pic     = $(this),
         getItems = function() {
@@ -11,8 +14,9 @@ jQuery(function($) {
             var items = [];
 
             $pic.find('a').each(function() {
-                var $href   = jQuery(this).attr('href'),
-                    $size   = jQuery(this).data('size').split('x'),
+
+                var $href   = $(this).attr('href'),
+                    $size   = $(this).data('size').split('x'),
                     $width  = $size[0],
                     $height = $size[1];
 
@@ -41,21 +45,13 @@ jQuery(function($) {
 
             event.preventDefault();
 
-            var $index = jQuery(this).index();
-
-            var testfunc = function(index) {
-
-					var image = items[index].el.find('img');
-
-					offset = image.offset();
-					console.log(offset.left, offset.top, image.width());
-			}
-			testfunc($index);
+            var $index = $(this).index();
 
             var options = {
                 index: $index,
                 bgOpacity: 0.9,
                 showHideOpacity: false,
+				galleryUID: $(this).parents('.psgal').attr('id'),
                 getThumbBoundsFn: function(index) {
 					var image = items[index].el.find('img'),
 					offset = image.offset();
@@ -65,20 +61,22 @@ jQuery(function($) {
 
             var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
             lightBox.init();
+
         });
 
     });
 
-
-    jQuery('.single_photoswipe').each( function() {
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	// Single image
+    $('.single_photoswipe').each( function() {
 
         var $pic     = $(this),
 
         getItems = function() {
             var items = [];
             $pic.each(function() {
-                var $href   = jQuery(this).attr('href'),
-                    $size   = jQuery(this).data('size').split('x'),
+                var $href   = $(this).attr('href'),
+                    $size   = $(this).data('size').split('x'),
                     $width  = $size[0],
                     $height = $size[1];
 
@@ -104,20 +102,22 @@ jQuery(function($) {
 
         $pic.on('click', 'img', function(event) {
 
-				event.preventDefault();
-				var $index = jQuery(this).index();
+			event.preventDefault();
 
-				var options = {
-				    index: $index,
-				    //bgOpacity: 0.9,
-				    //showHideOpacity: true,
-				    getThumbBoundsFn: function(index) {
-							var image = items[index].el.find('img'),
-							offset = image.offset();
-							return {x:offset.left, y:offset.top, w:image.width()};
+			var $index = $(this).index();
 
-						}
+			var options = {
+			    index: $index,
+				shareEl: false,
+				//galleryUID: $(this).parent().attr('id'),
+			    //bgOpacity: 0.9,
+			    //showHideOpacity: true,
+			    getThumbBoundsFn: function(index) {
+					var image = items[index].el.find('img'),
+					offset = image.offset();
+					return {x:offset.left, y:offset.top, w:image.width()};
 				}
+			}
 
             var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
             lightBox.init();
@@ -125,4 +125,95 @@ jQuery(function($) {
 
     });
 
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	// Parse URL and open gallery if it contains #&pid=3&gid=1
+	var hashData = parseHash();
+
+	if(hashData.gid) {
+
+		$('#' + hashData.gid).each( function() {
+
+			var $pic     = $(this),
+	        getItems = function() {
+
+	            var items = [];
+
+	            $pic.find('a').each(function() {
+
+	                var $href   = $(this).attr('href'),
+	                    $size   = $(this).data('size').split('x'),
+	                    $width  = $size[0],
+	                    $height = $size[1];
+
+	                var item = {
+	                    src 	: $href,
+	                    w   	: $width,
+	                    h   	: $height,
+	                    el		: $(this),
+	                    msrc	: $(this).find('img').attr('src'),
+						title	: $(this).attr('data-caption')
+	                }
+
+	                items.push(item);
+	            });
+	            return items;
+	        }
+
+	        var items = getItems();
+
+	        $.each(items, function(index, value) {
+	            image[index]     = new Image();
+	            image[index].src = value['src'];
+	        });
+
+            var $index = $(this).index();
+
+			console.log('- ' + $(this));
+
+            var options = {
+                index: $index,
+                bgOpacity: 0.9,
+                showHideOpacity: false,
+				galleryUID: '#' + hashData.gid,
+                getThumbBoundsFn: function(index) {
+					var image = items[index].el.find('img'),
+					offset = image.offset();
+					return {x:offset.left, y:offset.top, w:image.width()};
+				}
+            }
+
+            var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
+            lightBox.init();
+
+        });
+
+
+	}
+
 });
+
+var parseHash = function() {
+
+	var hash = window.location.hash.substring(1),
+	params = {};
+
+	if(hash.length < 5) {
+		return params;
+	}
+
+	var vars = hash.split('&');
+	for (var i = 0; i < vars.length; i++) {
+		if(!vars[i]) {
+			continue;
+		}
+		var pair = vars[i].split('=');
+		if(pair.length < 2) {
+			continue;
+		}
+		params[pair[0]] = pair[1];
+	}
+
+	params.pid = parseInt(params.pid, 10);
+	return params;
+};

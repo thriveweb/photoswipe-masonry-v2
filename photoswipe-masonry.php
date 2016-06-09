@@ -6,7 +6,7 @@ Description: This is a image gallery plugin for WordPress built using PhotoSwipe
 <a href="http://photoswipe.com/">PhotoSwipe</a>
 Author: Dean Oakley
 Author URI: http://thriveweb.com.au/
-Version: 1.2.1
+Version: 1.2.2
 Text Domain: photoswipe-masonry
 */
 
@@ -305,7 +305,7 @@ function photoswipe_scripts_method() {
 	//Core JS file
 	wp_enqueue_script( 'photoswipe', 			$photoswipe_wp_plugin_path . '/photoswipe-dist/photoswipe.min.js');
 
-	wp_enqueue_script( 'photoswipe-masonry-js', $photoswipe_wp_plugin_path . '/photoswipe-masonry.min.js');
+	wp_enqueue_script( 'photoswipe-masonry-js', $photoswipe_wp_plugin_path . '/photoswipe-masonry.js');
 
 	//UI JS file
 	wp_enqueue_script( 'photoswipe-ui-default', $photoswipe_wp_plugin_path . '/photoswipe-dist/photoswipe-ui-default.min.js');
@@ -384,7 +384,7 @@ function photoswipe_shortcode( $attr ) {
 		<style type='text/css'>
 
 			/* PhotoSwipe Plugin */
-			.photoswipe_gallery {
+			.psgal {
 				margin: auto;
 				padding-bottom:40px;
 
@@ -402,11 +402,11 @@ function photoswipe_shortcode( $attr ) {
 
 			}
 
-			.photoswipe_gallery.photoswipe_showme{
+			.psgal.photoswipe_showme{
 				opacity:1;
 			}
 
-			.photoswipe_gallery figure {
+			.psgal figure {
 				float: left;
 
 				";
@@ -422,18 +422,18 @@ function photoswipe_shortcode( $attr ) {
 				margin: 0px;
 				box-sizing:border-box;
 			}
-			.photoswipe_gallery a{
+			.psgal a{
 				display:block;
 			}
 
-			.photoswipe_gallery img {
+			.psgal img {
 				margin:auto;
 				max-width:100%;
 				width: auto;
 				height: auto;
 				border: 0;
 			}
-			.photoswipe_gallery figure figcaption{
+			.psgal figure figcaption{
 				font-size:13px;
 			}
 
@@ -459,7 +459,7 @@ function photoswipe_shortcode( $attr ) {
 		$size_class = sanitize_html_class( $args['size'] );
 		$output_buffer .=' <div style="clear:both"></div>
 
-		<div id="photoswipe_gallery_'.$post_id.'" class="photoswipe_gallery gallery-columns-'.$columns.' gallery-size-'.$size_class.'" itemscope itemtype="http://schema.org/ImageGallery" >';
+		<div id="psgal_'.$post_id.'" class="psgal gallery-columns-'.$columns.' gallery-size-'.$size_class.'" itemscope itemtype="http://schema.org/ImageGallery" >';
 
 
 		if ( !empty($attachments) ) {
@@ -496,7 +496,7 @@ function photoswipe_shortcode( $attr ) {
 
 		<script type='text/javascript'>
 
-			var container_".$post_id." = document.querySelector('#photoswipe_gallery_".$post_id."');
+			var container_".$post_id." = document.querySelector('#psgal_".$post_id."');
 			var msnry;
 
 			// initialize  after all images have loaded

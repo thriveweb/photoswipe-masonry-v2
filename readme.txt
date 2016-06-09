@@ -51,6 +51,9 @@ See a [demo here](http://thriveweb.com.au/the-lab/PhotoSwipe/ "PhotoSwipeWP")
 
 == Changelog ==
 
+= 1.2.2 =
+* Fix url popups
+
 = 1.2.1 =
 * Fix for captions in full screen
 * Tidied code
