@@ -10,9 +10,7 @@ jQuery(function($) {
 
         var $pic     = $(this),
         getItems = function() {
-
             var items = [];
-
             $pic.find('a').each(function() {
 
                 var $href   = $(this).attr('href'),
@@ -28,7 +26,6 @@ jQuery(function($) {
                     msrc	: $(this).find('img').attr('src'),
 					title	: $(this).attr('data-caption')
                 }
-
                 items.push(item);
             });
             return items;
@@ -44,7 +41,6 @@ jQuery(function($) {
         $pic.on('click', 'figure', function(event) {
 
             event.preventDefault();
-
             var $index = $(this).index();
 
             var options = {
@@ -71,7 +67,6 @@ jQuery(function($) {
     $('.single_photoswipe').each( function() {
 
         var $pic     = $(this),
-
         getItems = function() {
             var items = [];
             $pic.each(function() {
@@ -125,7 +120,6 @@ jQuery(function($) {
 
     });
 
-
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	// Parse URL and open gallery if it contains #&pid=3&gid=1
 	var hashData = parseHash();
@@ -154,23 +148,18 @@ jQuery(function($) {
 	                    msrc	: $(this).find('img').attr('src'),
 						title	: $(this).attr('data-caption')
 	                }
-
 	                items.push(item);
 	            });
 	            return items;
 	        }
 
 	        var items = getItems();
-
 	        $.each(items, function(index, value) {
 	            image[index]     = new Image();
 	            image[index].src = value['src'];
 	        });
 
             var $index = $(this).index();
-
-			console.log('- ' + $(this));
-
             var options = {
                 index: $index,
                 bgOpacity: 0.9,
@@ -187,10 +176,7 @@ jQuery(function($) {
             lightBox.init();
 
         });
-
-
 	}
-
 });
 
 var parseHash = function() {
