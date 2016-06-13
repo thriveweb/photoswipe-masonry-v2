@@ -1,124 +1,127 @@
 jQuery(function($) {
+	photoswipe_masonry($);
+});
+
+var photoswipe_masonry = function($){
 
 	var $pswp = $('.pswp')[0];
-    var image = [];
-
+	var image = [];
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	// Gallery
-    $('.psgal').each( function() {
+	$('.psgal').each( function() {
 
-        var $pic     = $(this),
-        getItems = function() {
-            var items = [];
-            $pic.find('a').each(function() {
+		var $pic     = $(this),
+		getItems = function() {
+			var items = [];
+			$pic.find('a').each(function() {
 
-                var $href   = $(this).attr('href'),
-                    $size   = $(this).data('size').split('x'),
-                    $width  = $size[0],
-                    $height = $size[1];
+				var $href   = $(this).attr('href'),
+					$size   = $(this).data('size').split('x'),
+					$width  = $size[0],
+					$height = $size[1];
 
-                var item = {
-                    src 	: $href,
-                    w   	: $width,
-                    h   	: $height,
-                    el		: $(this),
-                    msrc	: $(this).find('img').attr('src'),
+				var item = {
+					src 	: $href,
+					w   	: $width,
+					h   	: $height,
+					el		: $(this),
+					msrc	: $(this).find('img').attr('src'),
 					title	: $(this).attr('data-caption')
-                }
-                items.push(item);
-            });
-            return items;
-        }
-
-        var items = getItems();
-
-        $.each(items, function(index, value) {
-            image[index]     = new Image();
-            image[index].src = value['src'];
-        });
-
-        $pic.on('click', 'figure', function(event) {
-
-            event.preventDefault();
-            var $index = $(this).index();
-
-            var options = {
-                index: $index,
-                bgOpacity: 0.9,
-                showHideOpacity: false,
-				galleryUID: $(this).parents('.psgal').attr('id'),
-                getThumbBoundsFn: function(index) {
-					var image = items[index].el.find('img'),
-					offset = image.offset();
-					return {x:offset.left, y:offset.top, w:image.width()};
 				}
-            }
+				items.push(item);
+			});
+			return items;
+		}
 
-            var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
-            lightBox.init();
+		var items = getItems();
 
-        });
+		$.each(items, function(index, value) {
+			image[index]     = new Image();
+			image[index].src = value['src'];
+		});
 
-    });
-
-	/////////////////////////////////////////////////////////////////////////////////////////////
-	// Single image
-    $('.single_photoswipe').each( function() {
-
-        var $pic     = $(this),
-        getItems = function() {
-            var items = [];
-            $pic.each(function() {
-                var $href   = $(this).attr('href'),
-                    $size   = $(this).data('size').split('x'),
-                    $width  = $size[0],
-                    $height = $size[1];
-
-                var item = {
-                    src : $href,
-                    w   : $width,
-                    h   : $height,
-                    el	: $(this),
-                    msrc: $(this).find('img').attr('src')
-                }
-
-                items.push(item);
-            });
-            return items;
-        }
-
-        var items = getItems();
-
-        $.each(items, function(index, value) {
-            image[index]     = new Image();
-            image[index].src = value['src'];
-        });
-
-        $pic.on('click', 'img', function(event) {
+		$pic.on('click', 'figure', function(event) {
 
 			event.preventDefault();
-
 			var $index = $(this).index();
 
 			var options = {
-			    index: $index,
-				shareEl: false,
-				//galleryUID: $(this).parent().attr('id'),
-			    //bgOpacity: 0.9,
-			    //showHideOpacity: true,
-			    getThumbBoundsFn: function(index) {
+				index: $index,
+				bgOpacity: 0.9,
+				showHideOpacity: false,
+				galleryUID: $(this).parents('.psgal').attr('id'),
+				getThumbBoundsFn: function(index) {
 					var image = items[index].el.find('img'),
 					offset = image.offset();
 					return {x:offset.left, y:offset.top, w:image.width()};
 				}
 			}
 
-            var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
-            lightBox.init();
-        });
+			var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
+			lightBox.init();
 
-    });
+		});
+
+	});
+
+	/////////////////////////////////////////////////////////////////////////////////////////////
+	// Single image
+	$('.single_photoswipe').each( function() {
+
+		var $pic     = $(this),
+		getItems = function() {
+			var items = [];
+			$pic.each(function() {
+				var $href   = $(this).attr('href'),
+					$size   = $(this).data('size').split('x'),
+					$width  = $size[0],
+					$height = $size[1];
+
+				var item = {
+					src : $href,
+					w   : $width,
+					h   : $height,
+					el	: $(this),
+					msrc: $(this).find('img').attr('src')
+				}
+
+				items.push(item);
+			});
+			return items;
+		}
+
+		var items = getItems();
+
+		$.each(items, function(index, value) {
+			image[index]     = new Image();
+			image[index].src = value['src'];
+		});
+
+		$pic.on('click', 'img', function(event) {
+
+			event.preventDefault();
+
+			var $index = $(this).index();
+
+			var options = {
+				index: $index,
+				shareEl: false,
+				//galleryUID: $(this).parent().attr('id'),
+				//bgOpacity: 0.9,
+				//showHideOpacity: true,
+				getThumbBoundsFn: function(index) {
+					var image = items[index].el.find('img'),
+					offset = image.offset();
+					return {x:offset.left, y:offset.top, w:image.width()};
+				}
+			}
+
+			var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
+			lightBox.init();
+		});
+
+	});
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	// Parse URL and open gallery if it contains #&pid=3&gid=1
@@ -129,55 +132,55 @@ jQuery(function($) {
 		$('#' + hashData.gid).each( function() {
 
 			var $pic     = $(this),
-	        getItems = function() {
+			getItems = function() {
 
-	            var items = [];
+				var items = [];
 
-	            $pic.find('a').each(function() {
+				$pic.find('a').each(function() {
 
-	                var $href   = $(this).attr('href'),
-	                    $size   = $(this).data('size').split('x'),
-	                    $width  = $size[0],
-	                    $height = $size[1];
+					var $href   = $(this).attr('href'),
+						$size   = $(this).data('size').split('x'),
+						$width  = $size[0],
+						$height = $size[1];
 
-	                var item = {
-	                    src 	: $href,
-	                    w   	: $width,
-	                    h   	: $height,
-	                    el		: $(this),
-	                    msrc	: $(this).find('img').attr('src'),
+					var item = {
+						src 	: $href,
+						w   	: $width,
+						h   	: $height,
+						el		: $(this),
+						msrc	: $(this).find('img').attr('src'),
 						title	: $(this).attr('data-caption')
-	                }
-	                items.push(item);
-	            });
-	            return items;
-	        }
+					}
+					items.push(item);
+				});
+				return items;
+			}
 
-	        var items = getItems();
-	        $.each(items, function(index, value) {
-	            image[index]     = new Image();
-	            image[index].src = value['src'];
-	        });
+			var items = getItems();
+			$.each(items, function(index, value) {
+				image[index]     = new Image();
+				image[index].src = value['src'];
+			});
 
-            var $index = $(this).index();
-            var options = {
-                index: $index,
-                bgOpacity: 0.9,
-                showHideOpacity: false,
+			var $index = $(this).index();
+			var options = {
+				index: $index,
+				bgOpacity: 0.9,
+				showHideOpacity: false,
 				galleryUID: '#' + hashData.gid,
-                getThumbBoundsFn: function(index) {
+				getThumbBoundsFn: function(index) {
 					var image = items[index].el.find('img'),
 					offset = image.offset();
 					return {x:offset.left, y:offset.top, w:image.width()};
 				}
-            }
+			}
 
-            var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
-            lightBox.init();
+			var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
+			lightBox.init();
 
-        });
+		});
 	}
-});
+};
 
 var parseHash = function() {
 

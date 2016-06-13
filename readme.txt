@@ -51,6 +51,9 @@ See a [demo here](http://thriveweb.com.au/the-lab/PhotoSwipe/ "PhotoSwipeWP")
 
 == Changelog ==
 
+= 1.2.3 =
+* Now runs from function to simplify AJAX support
+
 = 1.2.2 =
 * Fix loading images via url in gallery mode
 * Removed sharing for single images. Will try to add in future versions.
