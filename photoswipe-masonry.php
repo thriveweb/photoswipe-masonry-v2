@@ -6,7 +6,7 @@ Description: This is a image gallery plugin for WordPress built using PhotoSwipe
 <a href="http://photoswipe.com/">PhotoSwipe</a>
 Author: Dean Oakley
 Author URI: http://thriveweb.com.au/
-Version: 1.2.3
+Version: 1.2.4
 Text Domain: photoswipe-masonry
 */
 
@@ -313,7 +313,7 @@ function photoswipe_scripts_method() {
 	//Masonry - re-named to move to header
 	wp_enqueue_script( 'photoswipe-masonry', 	$photoswipe_wp_plugin_path . '/masonry.pkgd.min.js','','',false);
 	//imagesloaded
-	wp_enqueue_script( 'imagesloaded', 			$photoswipe_wp_plugin_path . '/imagesloaded.pkgd.min.js','','',false);
+	wp_enqueue_script( 'photoswipe-imagesloaded', 			$photoswipe_wp_plugin_path . '/imagesloaded.pkgd.min.js');
 
 }
 add_action('wp_enqueue_scripts', 'photoswipe_scripts_method');
