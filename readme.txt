@@ -36,6 +36,7 @@ Some other features include:
 
 See a [demo here](http://thriveweb.com.au/the-lab/PhotoSwipe/ "PhotoSwipeWP")
 
+Want to contribute? See the GitHub repo (https://github.com/thriveweb/photoswipe-masonry "github.com/thriveweb/photoswipe-masonry")
 
 == Installation ==
 
