@@ -55,6 +55,7 @@ Want to contribute? See the GitHub repo (https://github.com/thriveweb/photoswipe
 = 1.2.5 =
 * Fix W3c validation issue and readme update
 * Centered image fix
+* History glitch fix 
 
 = 1.2.4 =
 * fix for WP 4.6.1
