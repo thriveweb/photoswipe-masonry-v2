@@ -48,6 +48,7 @@ var photoswipe_masonry = function($){
 
 			var options = {
 				index: $index,
+				shareEl: false,
 				bgOpacity: 0.9,
 				showHideOpacity: false,
 				galleryUID: $(this).parents('.psgal').attr('id'),
@@ -98,7 +99,9 @@ var photoswipe_masonry = function($){
 			image[index].src = value['src'];
 		});
 
-		$pic.on('click', 'img', function(event) {
+		$pic.on('click', null, function(event) {
+
+			console.log('x');
 
 			event.preventDefault();
 
@@ -128,6 +131,8 @@ var photoswipe_masonry = function($){
 	var hashData = parseHash();
 
 	if(hashData.gid) {
+
+		console.log(hashData.gid);
 
 		$('#' + hashData.gid).each( function() {
 
@@ -167,7 +172,7 @@ var photoswipe_masonry = function($){
 				index: $index,
 				bgOpacity: 0.9,
 				showHideOpacity: false,
-				galleryUID: '#' + hashData.gid,
+				galleryUID: hashData.gid,
 				getThumbBoundsFn: function(index) {
 					var image = items[index].el.find('img'),
 					offset = image.offset();
