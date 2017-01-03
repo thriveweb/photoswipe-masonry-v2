@@ -67,10 +67,10 @@
   .pswp--svg .pswp__button--arrow--right {
     background: none; } }
 
-.pswp__button--close {
+.pswp__button--close, .pswp__button--close:hover {
   background-position: 0 -44px; }
 
-.pswp__button--share {
+.pswp__button--share, .pswp__button--share:hover {
   background-position: -44px -44px; }
 
 .pswp__button--fs {
@@ -79,17 +79,17 @@
 .pswp--supports-fs .pswp__button--fs {
   display: block; }
 
-.pswp--fs .pswp__button--fs {
+.pswp--fs .pswp__button--fs, .pswp--fs .pswp__button--fs:hover {
   background-position: -44px 0; }
 
-.pswp__button--zoom {
+.pswp__button--zoom, .pswp__button--zoom:hover {
   display: none;
   background-position: -88px 0; }
 
 .pswp--zoom-allowed .pswp__button--zoom {
   display: block; }
 
-.pswp--zoomed-in .pswp__button--zoom {
+.pswp--zoomed-in .pswp__button--zoom, .pswp--zoomed-in .pswp__button--zoom:hover {
   background-position: -132px 0; }
 
 /* no arrows on touch screens */
