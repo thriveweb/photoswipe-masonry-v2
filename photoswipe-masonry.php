@@ -6,7 +6,7 @@ Description: This is a image gallery plugin for WordPress built using PhotoSwipe
 <a href="http://photoswipe.com/">PhotoSwipe</a>
 Author: Dean Oakley
 Author URI: http://thriveweb.com.au/
-Version: 1.2.4
+Version: 1.2.6
 Text Domain: photoswipe-masonry
 */
 
