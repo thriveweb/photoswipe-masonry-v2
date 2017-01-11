@@ -56,7 +56,7 @@ Want to contribute? See the GitHub repo (https://github.com/thriveweb/photoswipe
 * Centered image fix
 * History glitch fix
 * Fix issue with some themes not showimg buttons on hover. Thanks Jon007.
-* Fix Sharing to Facebook etc doesn't share correct image. Thanks Jon007.
+* Fix Sharing to Facebook etc doesn't share correct image. Thanks Jon007. 
 
 = 1.2.5 =
 * Fix W3c validation issue and readme update
