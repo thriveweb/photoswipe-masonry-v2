@@ -346,7 +346,7 @@ function photoswipe_shortcode( $attr ) {
 		'orderby'    => 'menu_order ID',
 		'include'    => '',
 		'exclude'    => ''
-	), $attr);
+	), $attr, 'gallery');
 
 	$photoswipe_count += 1;
 	$post_id = intval($post->ID) . '_' . $photoswipe_count;
