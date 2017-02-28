@@ -43,7 +43,7 @@ class photoswipe_plugin_options {
 
 			$options['show_controls'] = false;
 
-			$options['item_count'] = 10;
+			$options['item_count'] = 20;
 
 			$options['show_captions'] = true;
 
@@ -344,7 +344,7 @@ function photoswipe_shortcode( $attr ) {
 		$attr['include'] = $attr['ids'];
 	}
 
-	if( empty($options['item_count']) ) $options['item_count'] = 10;
+	if( empty($options['item_count']) ) $options['item_count'] = 20;
 
 	$args = shortcode_atts(array(
 		'id' 				=> intval($post->ID),
