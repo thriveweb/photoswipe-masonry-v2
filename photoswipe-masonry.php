@@ -335,6 +335,8 @@ function photoswipe_shortcode( $attr ) {
 	global $post;
 	global $photoswipe_count;
 
+
+
 	$options = get_option('photoswipe_options');
 
 	if ( ! empty( $attr['ids'] ) ) {
@@ -344,6 +346,8 @@ function photoswipe_shortcode( $attr ) {
 		}
 		$attr['include'] = $attr['ids'];
 	}
+
+	if( empty($options['item_count']) ) $options['item_count'] = 10;
 
 	$args = shortcode_atts(array(
 		'id' 				=> intval($post->ID),
@@ -357,8 +361,11 @@ function photoswipe_shortcode( $attr ) {
 		'item_count' => $options['item_count']
 	), $attr, 'gallery');
 
+	print_r($args);
+
 	$photoswipe_count += 1;
 	$post_id = intval($post->ID) . '_' . $photoswipe_count;
+
 
 
 	$output_buffer='';
