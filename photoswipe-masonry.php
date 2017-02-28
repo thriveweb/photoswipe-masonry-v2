@@ -329,13 +329,10 @@ add_action('wp_enqueue_scripts', 'photoswipe_scripts_method');
 add_shortcode( 'gallery', 'photoswipe_shortcode' );
 add_shortcode( 'photoswipe', 'photoswipe_shortcode' );
 
-
 function photoswipe_shortcode( $attr ) {
 
 	global $post;
 	global $photoswipe_count;
-
-
 
 	$options = get_option('photoswipe_options');
 
