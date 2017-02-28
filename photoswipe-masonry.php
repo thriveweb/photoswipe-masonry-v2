@@ -472,7 +472,7 @@ function photoswipe_shortcode( $attr ) {
 			$i = 0;
 			foreach ( $attachments as $aid => $attachment ) {
 				$i++;
-				$thumb = wp_get_attachment_image_src( $aid , 'photoswipe_thumbnails');
+				$thumb = wp_get_attachment_image_src( $aid , apply_filters( 'photoswipe_thumbnail_size', 'photoswipe_thumbnails') );
 				$full = wp_get_attachment_image_src( $aid , 'photoswipe_full');
 				$_post = get_post($aid);
 				$image_title = esc_attr($_post->post_title);
