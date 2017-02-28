@@ -361,12 +361,8 @@ function photoswipe_shortcode( $attr ) {
 		'item_count' => $options['item_count']
 	), $attr, 'gallery');
 
-	print_r($args);
-
 	$photoswipe_count += 1;
 	$post_id = intval($post->ID) . '_' . $photoswipe_count;
-
-
 
 	$output_buffer='';
 
@@ -393,7 +389,6 @@ function photoswipe_shortcode( $attr ) {
 
 		$columns = intval($args['columns']);
         $itemwidth = $columns > 0 ? floor(100/$columns) : 100;
-
 
 		$output_buffer .= "
 
