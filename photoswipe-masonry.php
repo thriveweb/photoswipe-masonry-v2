@@ -472,7 +472,7 @@ function photoswipe_shortcode( $attr ) {
 			$i = 0;
 			foreach ( $attachments as $aid => $attachment ) {
 				$i++;
-				$thumb = wp_get_attachment_image_src( $aid , 'photoswipe_thumbnails');
+				$thumb = wp_get_attachment_image_src( $aid , apply_filters( 'photoswipe_thumbnail_size', 'photoswipe_thumbnails') );
 				$full = wp_get_attachment_image_src( $aid , 'photoswipe_full');
 				$_post = get_post($aid);
 				$image_title = esc_attr($_post->post_title);
@@ -499,13 +499,20 @@ function photoswipe_shortcode( $attr ) {
 			var grid_".$post_id.";";
 
 			if(!$options['use_masonry']){
-				 $output_buffer .="
+				
+				$masonry_options = "
+						// options...
+						itemSelector: '.msnry_item',
+						//columnWidth: ".$options['thumbnail_width'].",
+						isFitWidth: true
+					";
+				
+				$masonry_options = apply_filters( 'photoswipe_masonry_options', $masonry_options );
+			
+				$output_buffer .="
 					// initialize Masonry after all images have loaded
 					grid_".$post_id." = jQuery('#psgal_".$post_id."').masonry({
-					  // options...
-					  itemSelector: '.msnry_item',
-					  //columnWidth: ".$options['thumbnail_width'].",
-					  isFitWidth: true
+						" .$masonry_options. "
 					});
 
 					grid_".$post_id.".imagesLoaded().progress( function() {
