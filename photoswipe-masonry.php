@@ -111,7 +111,6 @@ class photoswipe_plugin_options {
 			photoswipe_plugin_options::pSwipe_getOptions();
 		}
 
-		add_submenu_page( 'options-general.php', 'PhotoSwipe options', 'PhotoSwipe', 'edit_theme_options', basename(__FILE__), array('photoswipe_plugin_options', 'display'));
 	}
 
 
