@@ -35,6 +35,15 @@ Some other features include:
 * Keyboard control
 * Supports multiple galleries
 
+
+Filter:
+Removes menu page for non admins ( thanks to lucspe )
+add_filter( 'photoswipe_menu_capability', 'photoswipe_menu_custom_cap' );
+function photoswipe_menu_custom_cap() {
+    return 'manage_options';
+}
+
+
 See a [demo here](http://thriveweb.com.au/the-lab/PhotoSwipe/ "PhotoSwipeWP")
 
 Want to contribute? See the GitHub repo (https://github.com/thriveweb/photoswipe-masonry "github.com/thriveweb/photoswipe-masonry")
