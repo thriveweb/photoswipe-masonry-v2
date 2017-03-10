@@ -6,7 +6,7 @@ Description: This is a image gallery plugin for WordPress built using PhotoSwipe
 <a href="http://photoswipe.com/">PhotoSwipe</a>
 Author: Dean Oakley
 Author URI: http://thriveweb.com.au/
-Version: 1.2.4
+Version: 1.2.7
 Text Domain: photoswipe-masonry
 */
 
@@ -42,6 +42,8 @@ class photoswipe_plugin_options {
 		if (!is_array($options)) {
 
 			$options['show_controls'] = false;
+
+			$options['item_count'] = 20;
 
 			$options['show_captions'] = true;
 
@@ -97,13 +99,19 @@ class photoswipe_plugin_options {
 				$options['use_masonry'] = (bool)false;
 			}
 
+			if (isset($_POST['item_count'])) {
+				$options['item_count'] = (int)$_POST['item_count'];
+			} else {
+				$options['item_count'] = (int)10;
+			}
+
 			update_option('photoswipe_options', $options);
 
 		} else {
 			photoswipe_plugin_options::pSwipe_getOptions();
 		}
 
-		add_submenu_page( 'options-general.php', 'PhotoSwipe options', 'PhotoSwipe', 'edit_theme_options', basename(__FILE__), array('photoswipe_plugin_options', 'display'));
+		add_submenu_page( 'options-general.php', 'PhotoSwipe options', 'PhotoSwipe', apply_filters( 'photoswipe_menu_capability', 'edit_theme_options' ), basename(__FILE__), array('photoswipe_plugin_options', 'display'));
 	}
 
 
@@ -145,13 +153,13 @@ class photoswipe_plugin_options {
 				</div>
 
 				<div class="ps_border" ></div>
+				<p><label><input name="item_count" type="number" value="<?php if ($options['item_count']) echo $options['item_count']; else echo 10 ?>" max="500" /> Thumbnails per page</label></p>
 
 				<p><label><input name="white_theme" type="checkbox" value="checkbox" <?php if($options['white_theme']) echo "checked='checked'"; ?> /> Use white theme?</label></p>
 
 				<p><label><input name="show_captions" type="checkbox" value="checkbox" <?php if($options['show_captions']) echo "checked='checked'"; ?> /> Show captions on thumbnails?</label></p>
 
 				<p><label><input name="use_masonry" type="checkbox" value="checkbox" <?php if($options['use_masonry']) echo "checked='checked'"; ?> />Don't use Masonry?</label></p>
-
 
 				<p><input class="button-primary" type="submit" name="photoswipe_save" value="Save Changes" /></p>
 
@@ -321,7 +329,6 @@ add_action('wp_enqueue_scripts', 'photoswipe_scripts_method');
 add_shortcode( 'gallery', 'photoswipe_shortcode' );
 add_shortcode( 'photoswipe', 'photoswipe_shortcode' );
 
-
 function photoswipe_shortcode( $attr ) {
 
 	global $post;
@@ -337,6 +344,8 @@ function photoswipe_shortcode( $attr ) {
 		$attr['include'] = $attr['ids'];
 	}
 
+	if( empty($options['item_count']) ) $options['item_count'] = 20;
+
 	$args = shortcode_atts(array(
 		'id' 				=> intval($post->ID),
 		'show_controls' 	=> $options['show_controls'],
@@ -345,12 +354,12 @@ function photoswipe_shortcode( $attr ) {
 		'order'      => 'DESC',
 		'orderby'    => 'menu_order ID',
 		'include'    => '',
-		'exclude'    => ''
-	), $attr);
+		'exclude'    => '',
+		'item_count' => $options['item_count']
+	), $attr, 'gallery');
 
 	$photoswipe_count += 1;
 	$post_id = intval($post->ID) . '_' . $photoswipe_count;
-
 
 	$output_buffer='';
 
@@ -378,7 +387,6 @@ function photoswipe_shortcode( $attr ) {
 		$columns = intval($args['columns']);
         $itemwidth = $columns > 0 ? floor(100/$columns) : 100;
 
-
 		$output_buffer .= "
 
 		<style type='text/css'>
@@ -392,8 +400,6 @@ function photoswipe_shortcode( $attr ) {
 				-moz-transition: all 0.4s ease;
 				-o-transition: all 0.4s ease;
 				transition: all 0.4s ease;
-
-				opacity:0.1;
 				";
 
 				if($options['use_masonry']) $output_buffer .="opacity:1; text-align:center;";
@@ -463,32 +469,25 @@ function photoswipe_shortcode( $attr ) {
 
 
 		if ( !empty($attachments) ) {
+			$i = 0;
 			foreach ( $attachments as $aid => $attachment ) {
-
-				$thumb = wp_get_attachment_image_src( $aid , 'photoswipe_thumbnails');
-
+				$i++;
+				$thumb = wp_get_attachment_image_src( $aid , apply_filters( 'photoswipe_thumbnail_size', 'photoswipe_thumbnails') );
 				$full = wp_get_attachment_image_src( $aid , 'photoswipe_full');
-
 				$_post = get_post($aid);
-
 				$image_title = esc_attr($_post->post_title);
 				$image_alttext = get_post_meta($aid, '_wp_attachment_image_alt', true);
 				$image_caption = $_post->post_excerpt;
 				$image_description = $_post->post_content;
-
 				$output_buffer .='
-				<figure class="msnry_item" itemscope itemtype="http://schema.org/ImageObject">
+				<figure class="msnry_item" itemscope itemtype="http://schema.org/ImageObject" '.($i > $args['item_count'] ? 'style="display:none;"' : '') .'>
 					<a href="'. $full[0] .'" itemprop="contentUrl" data-size="'.$full[1].'x'.$full[2].'" data-caption="'. $image_caption .'" >
-				        <img src='. $thumb[0] .' itemprop="thumbnail" alt="'.$image_alttext.'"  />
-				    </a>
-				    <figcaption class="photoswipe-gallery-caption" >'. $image_caption .'</figcaption>
-			    </figure>
-				';
-
+		        <img data-src="'. $thumb[0] .'" src="'.($i <= $args['item_count'] ? $thumb[0] : '') .'" itemprop="thumbnail" alt="'.$image_alttext.'" />
+			    </a>
+			    <figcaption class="photoswipe-gallery-caption" >'. $image_caption .'</figcaption>
+		    </figure>';
 			}
 		}
-
-
 
 		$output_buffer .="</div>
 
@@ -497,42 +496,64 @@ function photoswipe_shortcode( $attr ) {
 		<script type='text/javascript'>
 
 			var container_".$post_id." = document.querySelector('#psgal_".$post_id."');
-			var msnry;
+			var grid_".$post_id.";";
 
-			// initialize  after all images have loaded
-			imagesLoaded( container_".$post_id.", function() {
-
-				";
-
-				if(!$options['use_masonry']){
-					 $output_buffer .="
-
-						// initialize Masonry after all images have loaded
-						new Masonry( container_".$post_id.", {
-						  // options...
-						  itemSelector: '.msnry_item',
-						  //columnWidth: ".$options['thumbnail_width'].",
-						  isFitWidth: true
-						});
-
-						(container_".$post_id.").className += ' photoswipe_showme';
-
-						";
-				}
-
+			if(!$options['use_masonry']){
+				
+				$masonry_options = "
+						// options...
+						itemSelector: '.msnry_item',
+						//columnWidth: ".$options['thumbnail_width'].",
+						isFitWidth: true
+					";
+				
+				$masonry_options = apply_filters( 'photoswipe_masonry_options', $masonry_options );
+			
 				$output_buffer .="
+					// initialize Masonry after all images have loaded
+					grid_".$post_id." = jQuery('#psgal_".$post_id."').masonry({
+						" .$masonry_options. "
+					});
 
-			});
+					grid_".$post_id.".imagesLoaded().progress( function() {
+					  grid_".$post_id.".masonry('layout');
+					});";
+			}
 
-
-		</script>
-
-	";
-
+			$output_buffer .="
+			if (jQuery('#psgal_".$post_id." .msnry_item:last-of-type').index() + 1 > ".$args['item_count'].") {
+				var loadCount_".$post_id." = 1;
+				var loadingImages_".$post_id." = false;
+				jQuery(document).on('scroll', function() {
+					var lastImgNth_".$post_id." = (" . $args['item_count'] . " * loadCount_".$post_id."),
+							lastImg_".$post_id." = jQuery('#psgal_".$post_id." .msnry_item:nth-child(' + lastImgNth_".$post_id." + ')');
+					if (!loadingImages_".$post_id." && (lastImg_".$post_id.".length && (jQuery(document).scrollTop() + (jQuery(window).height() / 2)) >= (lastImg_".$post_id.".offset().top + lastImg_".$post_id.".height()))) {
+						loadCount_".$post_id."++;
+						loadingImages_".$post_id." = true;
+						for (var i = 1; i <= ".$args['item_count']."; i++) {
+							if (i >= (jQuery('#psgal_".$post_id." .msnry_item:last-of-type').index() + 1)) {
+								return;
+							}
+							var img = jQuery('#psgal_".$post_id." .msnry_item:nth-child(' + (lastImgNth_".$post_id." + i) + ') a img');
+							img.attr('src', img.data('src'));
+						}
+						";
+						if(!$options['use_masonry']){
+							$output_buffer .="
+							grid_".$post_id.".imagesLoaded().progress( function() {
+								jQuery('#psgal_".$post_id." .msnry_item').css('display', 'block');
+								grid_".$post_id.".masonry('layout');
+								loadingImages_".$post_id." = false;
+							});";
+						}
+						$output_buffer .="
+					}
+				});
+			}
+		</script>";
 
 		return $output_buffer;
 }
-
 
 function photoswipe_footer() {
 	echo <<<EOF
