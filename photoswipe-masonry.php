@@ -6,7 +6,7 @@ Description: This is a image gallery plugin for WordPress built using PhotoSwipe
 <a href="http://photoswipe.com/">PhotoSwipe</a>
 Author: Dean Oakley
 Author URI: http://thriveweb.com.au/
-Version: 1.2.61
+Version: 1.2.6
 Text Domain: photoswipe-masonry
 */
 
@@ -42,6 +42,8 @@ class photoswipe_plugin_options {
 		if (!is_array($options)) {
 
 			$options['show_controls'] = false;
+
+			$options['item_count'] = 10;
 
 			$options['show_captions'] = true;
 
@@ -97,6 +99,12 @@ class photoswipe_plugin_options {
 				$options['use_masonry'] = (bool)false;
 			}
 
+			if (isset($_POST['item_count'])) {
+				$options['item_count'] = (int)$_POST['item_count'];
+			} else {
+				$options['item_count'] = (int)10;
+			}
+
 			update_option('photoswipe_options', $options);
 
 		} else {
@@ -145,13 +153,13 @@ class photoswipe_plugin_options {
 				</div>
 
 				<div class="ps_border" ></div>
+				<p><label><input name="item_count" type="number" value="<?php if ($options['item_count']) echo $options['item_count']; else echo 10 ?>" max="500" /> Thumbnails per page</label></p>
 
 				<p><label><input name="white_theme" type="checkbox" value="checkbox" <?php if($options['white_theme']) echo "checked='checked'"; ?> /> Use white theme?</label></p>
 
 				<p><label><input name="show_captions" type="checkbox" value="checkbox" <?php if($options['show_captions']) echo "checked='checked'"; ?> /> Show captions on thumbnails?</label></p>
 
 				<p><label><input name="use_masonry" type="checkbox" value="checkbox" <?php if($options['use_masonry']) echo "checked='checked'"; ?> />Don't use Masonry?</label></p>
-
 
 				<p><input class="button-primary" type="submit" name="photoswipe_save" value="Save Changes" /></p>
 
@@ -305,10 +313,10 @@ function photoswipe_scripts_method() {
 	//Core JS file
 	wp_enqueue_script( 'photoswipe', 			$photoswipe_wp_plugin_path . '/photoswipe-dist/photoswipe.min.js');
 
-	wp_enqueue_script( 'photoswipe-masonry-js', $photoswipe_wp_plugin_path . '/photoswipe-masonry.min.js');
+	wp_enqueue_script( 'photoswipe-masonry-js', $photoswipe_wp_plugin_path . '/photoswipe-masonry.js');
 
 	//UI JS file
-	wp_enqueue_script( 'photoswipe-ui-default', $photoswipe_wp_plugin_path . '/photoswipe-dist/photoswipe-ui-default.min.js', array(), null);  //cache bust
+	wp_enqueue_script( 'photoswipe-ui-default', $photoswipe_wp_plugin_path . '/photoswipe-dist/photoswipe-ui-default.min.js');
 
 	//Masonry - re-named to move to header
 	wp_enqueue_script( 'photoswipe-masonry', 	$photoswipe_wp_plugin_path . '/masonry.pkgd.min.js','','',false);
@@ -321,70 +329,6 @@ add_action('wp_enqueue_scripts', 'photoswipe_scripts_method');
 add_shortcode( 'gallery', 'photoswipe_shortcode' );
 add_shortcode( 'photoswipe', 'photoswipe_shortcode' );
 
-/**https://codex.wordpress.org/Function_Reference/get_intermediate_image_sizes
-/**
- * Get size information for all currently-registered image sizes.
- *
- * @global $_wp_additional_image_sizes
- * @uses   get_intermediate_image_sizes()
- * @return array $sizes Data for all currently-registered image sizes.
- */
-function get_image_sizes() {
-	global $_wp_additional_image_sizes;
-
-	$sizes = array();
-
-	foreach ( get_intermediate_image_sizes() as $_size ) {
-		if ( in_array( $_size, array('thumbnail', 'medium', 'medium_large', 'large') ) ) {
-			$sizes[ $_size ]['width']  = get_option( "{$_size}_size_w" );
-			$sizes[ $_size ]['height'] = get_option( "{$_size}_size_h" );
-			$sizes[ $_size ]['crop']   = (bool) get_option( "{$_size}_crop" );
-		} elseif ( isset( $_wp_additional_image_sizes[ $_size ] ) ) {
-			$sizes[ $_size ] = array(
-				'width'  => $_wp_additional_image_sizes[ $_size ]['width'],
-				'height' => $_wp_additional_image_sizes[ $_size ]['height'],
-				'crop'   => $_wp_additional_image_sizes[ $_size ]['crop'],
-			);
-		}
-	}
-
-	return $sizes;
-}
-
-/**https://codex.wordpress.org/Function_Reference/get_intermediate_image_sizes
- * Get size information for a specific image size.
- *
- * @uses   get_image_sizes()
- * @param  string $size The image size for which to retrieve data.
- * @return bool|array $size Size data about an image size or false if the size doesn't exist.
- */
-function get_image_size( $size ) {
-	$sizes = get_image_sizes();
-
-	if ( isset( $sizes[ $size ] ) ) {
-		return $sizes[ $size ];
-	}
-
-	return false;
-}
-/**
- * Get the width of a specific image size.
- *
- * @uses   get_image_size()
- * @param  string $size The image size for which to retrieve data.
- * @return bool|string $size Width of an image size or false if the size doesn't exist.
- */
-function get_image_width( $size, $default=50 ) {
-	if ( ! $size = get_image_size( $size ) ) {
-		return false;
-	}
-
-	if ( isset( $size['width'] ) ) {
-		return $size['width'];
-	}
-
-	return $default;
-}
 
 function photoswipe_shortcode( $attr ) {
 
@@ -409,18 +353,14 @@ function photoswipe_shortcode( $attr ) {
 		'order'      => 'DESC',
 		'orderby'    => 'menu_order ID',
 		'include'    => '',
-		'exclude'    => ''
-	), $attr);
+		'exclude'    => '',
+		'item_count' => $options['item_count']
+	), $attr, 'gallery');
 
 	$photoswipe_count += 1;
 	$post_id = intval($post->ID) . '_' . $photoswipe_count;
 
-  $size_class = sanitize_html_class( $args['size'] );
-  $img_width = get_image_width($size_class);
-  if ($size_class!='thumbnail'){$img_width=$img_width*0.5;}
-//  if ($size_class!='thumbnail'){$options['use_masonry']=0;}
-  
-  
+
 	$output_buffer='';
 
 	    if ( !empty($args['include']) ) {
@@ -461,7 +401,6 @@ function photoswipe_shortcode( $attr ) {
 				-moz-transition: all 0.4s ease;
 				-o-transition: all 0.4s ease;
 				transition: all 0.4s ease;
-
 				";
 
 				if($options['use_masonry']) $output_buffer .="opacity:1; text-align:center;";
@@ -484,21 +423,20 @@ function photoswipe_shortcode( $attr ) {
 				$output_buffer .= "
 
 				text-align: center;
-        width:".$img_width."px;        
+				width: ".$options['thumbnail_width']."px;
+
 				padding:5px;
 				margin: 0px;
 				box-sizing:border-box;
 			}
-      
-      /*this is causing negative effect on other <a> tags which end up being contained in the scenario of using psgal for the whole content..
 			.psgal a{
 				display:block;
 			}
-      */
-			.psgal figure img {
+
+			.psgal img {
 				margin:auto;
 				max-width:100%;
-        width:".$img_width."px;        
+				width: auto;
 				height: auto;
 				border: 0;
 			}
@@ -525,38 +463,32 @@ function photoswipe_shortcode( $attr ) {
 			$output_buffer .= "
 		</style>";
 
+		$size_class = sanitize_html_class( $args['size'] );
 		$output_buffer .=' <div style="clear:both"></div>
 
 		<div id="psgal_'.$post_id.'" class="psgal gallery-columns-'.$columns.' gallery-size-'.$size_class.'" itemscope itemtype="http://schema.org/ImageGallery" >';
 
 
 		if ( !empty($attachments) ) {
+			$i = 0;
 			foreach ( $attachments as $aid => $attachment ) {
-
-				$thumb = wp_get_attachment_image_src( $aid , $size_class);
-
+				$i++;
+				$thumb = wp_get_attachment_image_src( $aid , 'photoswipe_thumbnails');
 				$full = wp_get_attachment_image_src( $aid , 'photoswipe_full');
-
 				$_post = get_post($aid);
-
 				$image_title = esc_attr($_post->post_title);
 				$image_alttext = get_post_meta($aid, '_wp_attachment_image_alt', true);
 				$image_caption = $_post->post_excerpt;
 				$image_description = $_post->post_content;
-
 				$output_buffer .='
-				<figure class="msnry_item" itemscope itemtype="http://schema.org/ImageObject">
+				<figure class="msnry_item" itemscope itemtype="http://schema.org/ImageObject" '.($i > $args['item_count'] ? 'style="display:none;"' : '') .'>
 					<a href="'. $full[0] .'" itemprop="contentUrl" data-size="'.$full[1].'x'.$full[2].'" data-caption="'. $image_caption .'" >
-				        <img src='. $thumb[0] .' itemprop="thumbnail" alt="'.$image_alttext.'"  />
-				    </a>
-				    <figcaption class="photoswipe-gallery-caption" >'. $image_caption .'</figcaption>
-			    </figure>
-				';
-
+		        <img data-src="'. $thumb[0] .'" src="'.($i <= $args['item_count'] ? $thumb[0] : '') .'" itemprop="thumbnail" alt="'.$image_alttext.'" />
+			    </a>
+			    <figcaption class="photoswipe-gallery-caption" >'. $image_caption .'</figcaption>
+		    </figure>';
 			}
 		}
-
-
 
 		$output_buffer .="</div>
 
@@ -565,51 +497,58 @@ function photoswipe_shortcode( $attr ) {
 		<script type='text/javascript'>
 
 			var container_".$post_id." = document.querySelector('#psgal_".$post_id."');
-			var msnry;
+			var grid_".$post_id.";";
 
-			// initialize  after all images have loaded
-			imagesLoaded( container_".$post_id.", function() {
+			if(!$options['use_masonry']){
+				 $output_buffer .="
+					// initialize Masonry after all images have loaded
+					grid_".$post_id." = jQuery('#psgal_".$post_id."').masonry({
+					  // options...
+					  itemSelector: '.msnry_item',
+					  //columnWidth: ".$options['thumbnail_width'].",
+					  isFitWidth: true
+					});
 
-				";
+					grid_".$post_id.".imagesLoaded().progress( function() {
+					  grid_".$post_id.".masonry('layout');
+					});";
+			}
 
-				if(!$options['use_masonry']){
-					 $output_buffer .="
-
-						// initialize Masonry after all images have loaded
-						new Masonry( container_".$post_id.", {
-						  // options...
-						  itemSelector: '.msnry_item',
-						  //columnWidth: ".$options['thumbnail_width'].",
-						  isFitWidth: true
-						});
-
-						(container_".$post_id.").className += ' photoswipe_showme';
-
+			$output_buffer .="
+			if (jQuery('#psgal_".$post_id." .msnry_item:last-of-type').index() + 1 > ".$args['item_count'].") {
+				var loadCount_".$post_id." = 1;
+				var loadingImages_".$post_id." = false;
+				jQuery(document).on('scroll', function() {
+					var lastImgNth_".$post_id." = (" . $args['item_count'] . " * loadCount_".$post_id."),
+							lastImg_".$post_id." = jQuery('#psgal_".$post_id." .msnry_item:nth-child(' + lastImgNth_".$post_id." + ')');
+					if (!loadingImages_".$post_id." && (lastImg_".$post_id.".length && (jQuery(document).scrollTop() + (jQuery(window).height() / 2)) >= (lastImg_".$post_id.".offset().top + lastImg_".$post_id.".height()))) {
+						loadCount_".$post_id."++;
+						loadingImages_".$post_id." = true;
+						for (var i = 1; i <= ".$args['item_count']."; i++) {
+							if (i >= (jQuery('#psgal_".$post_id." .msnry_item:last-of-type').index() + 1)) {
+								return;
+							}
+							var img = jQuery('#psgal_".$post_id." .msnry_item:nth-child(' + (lastImgNth_".$post_id." + i) + ') a img');
+							img.attr('src', img.data('src'));
+						}
 						";
-				}
-
-				$output_buffer .="});</script>";
+						if(!$options['use_masonry']){
+							$output_buffer .="
+							grid_".$post_id.".imagesLoaded().progress( function() {
+								jQuery('#psgal_".$post_id." .msnry_item').css('display', 'block');
+								grid_".$post_id.".masonry('layout');
+								loadingImages_".$post_id." = false;
+							});";
+						}
+						$output_buffer .="
+					}
+				});
+			}
+		</script>";
 
 		return $output_buffer;
 }
 
-
-/*add psgal class to body to enable gallery for all images on the page which link to an image.. */
-function body_psgal_filter( $classes ) {
-    /* psgal class enables photoswipe gallery */
-    //could be customized by type of page..
-    //if ((is_single()) || is_product_category()  || is_category() )
-      $classes[] = sanitize_html_class( 'psgal' );
-    
-    return $classes;
-}
-add_filter( 'body_class', 'body_psgal_filter' );
-
-
-//highly un-minified footer to add to every page, TODO:
-// - make the commments php comments rather than html comments
-// - only echo the minimal html without all the spacing
-//== legible + minified!!
 function photoswipe_footer() {
 	echo <<<EOF
 			<!-- Root element of PhotoSwipe. Must have class pswp. -->
