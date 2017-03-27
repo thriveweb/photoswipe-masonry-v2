@@ -53,7 +53,7 @@ class photoswipe_plugin_options {
 
 			update_option('photoswipe_options', $options);
 		}
-		
+
 		return $options;
 	}
 
@@ -66,29 +66,29 @@ class photoswipe_plugin_options {
 			$options['max_image_height'] = stripslashes($_POST['max_image_height']);
 
 			if (isset($_POST['white_theme'])) {
-				$options['white_theme'] = (bool)true;
+				$options['white_theme'] = (bool) true;
 			} else {
-				$options['white_theme'] = (bool)false;
+				$options['white_theme'] = (bool) false;
 			}
 			if (isset($_POST['show_controls'])) {
-				$options['show_controls'] = (bool)true;
+				$options['show_controls'] = (bool) true;
 			} else {
-				$options['show_controls'] = (bool)false;
+				$options['show_controls'] = (bool) false;
 			}
 			if (isset($_POST['show_captions'])) {
-				$options['show_captions'] = (bool)true;
+				$options['show_captions'] = (bool) true;
 			} else {
-				$options['show_captions'] = (bool)false;
+				$options['show_captions'] = (bool) false;
 			}
 			if (isset($_POST['use_masonry'])) {
-				$options['use_masonry'] = (bool)true;
+				$options['use_masonry'] = (bool) true;
 			} else {
-				$options['use_masonry'] = (bool)false;
+				$options['use_masonry'] = (bool) false;
 			}
 			if (isset($_POST['item_count'])) {
-				$options['item_count'] = (int)$_POST['item_count'];
+				$options['item_count'] = (int) $_POST['item_count'];
 			} else {
-				$options['item_count'] = (int)10;
+				$options['item_count'] = (int) 10;
 			}
 
 			update_option('photoswipe_options', $options);
@@ -307,7 +307,6 @@ function photoswipe_scripts_method() {
 	wp_enqueue_script('jquery');
 	//Core JS file
 	wp_enqueue_script( 'photoswipe', 			$photoswipe_wp_plugin_path . '/photoswipe-dist/photoswipe.min.js');
-	wp_enqueue_script( 'photoswipe-masonry-js', $photoswipe_wp_plugin_path . '/photoswipe-masonry.js');
 	//UI JS file
 	wp_enqueue_script( 'photoswipe-ui-default', $photoswipe_wp_plugin_path . '/photoswipe-dist/photoswipe-ui-default.min.js');
 	//Masonry - re-named to move to header
@@ -438,6 +437,7 @@ function photoswipe_shortcode( $attr ) {
 			$i = 0;
 			foreach ( $attachments as $aid => $attachment ) :
 				$i++;
+				$img_srcset = wp_get_attachment_image_srcset( $aid, 'photoswipe_thumbnails' );
 				$thumb = wp_get_attachment_image_src( $aid , 'photoswipe_thumbnails');
 				$full = wp_get_attachment_image_src( $aid , 'photoswipe_full');
 				$_post = get_post($aid);
@@ -447,8 +447,14 @@ function photoswipe_shortcode( $attr ) {
 				$image_description = $_post->post_content;
 				?>
 				<figure class="msnry_item" itemscope itemtype="http://schema.org/ImageObject" <?= ($i > $args['item_count'] ? 'style="display:none;"' : '') ?>>
-					<a href="<?= $full[0] ?>" itemprop="contentUrl" data-size="<?= $full[1] . 'x' . $full[2] ?>" data-caption="<?= $image_caption ?>" >
-						<img data-src="<?= $thumb[0] ?>" src="<?= ($i <= $args['item_count'] ? $thumb[0] : '') ?>" itemprop="thumbnail" alt="<?= $image_alttext ?>" />
+					<a href="<?= $full[0] ?>" itemprop="contentUrl" data-size="<?= $full[1] . 'x' . $full[2] ?>" data-caption="<?= $image_caption ?>">
+						<img
+						data-src="<?= $thumb[0] ?>"
+						src="<?= ($i <= $args['item_count'] ? $thumb[0] : '') ?>"
+						itemprop="thumbnail"
+						alt="<?= $image_alttext ?>"
+						srcset="<?= esc_attr( $img_srcset ); ?>"
+			      sizes="(max-width: 50em) 87vw, 680px" />
 					</a>
 					<figcaption class="photoswipe-gallery-caption"><?= $image_caption ?></figcaption>
 				</figure>
@@ -560,5 +566,4 @@ function photoswipe_footer() {
 	</div>
 	<?php
 	echo ob_get_clean();
-
 }
