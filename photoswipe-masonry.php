@@ -6,7 +6,7 @@ Description: This is a image gallery plugin for WordPress built using PhotoSwipe
 <a href="http://photoswipe.com/">PhotoSwipe</a>
 Author: Dean Oakley
 Author URI: http://thriveweb.com.au/
-Version: 1.2.7
+Version: 1.2.6
 Text Domain: photoswipe-masonry
 */
 
@@ -43,7 +43,7 @@ class photoswipe_plugin_options {
 
 			$options['show_controls'] = false;
 
-			$options['item_count'] = 20;
+			$options['item_count'] = 10;
 
 			$options['show_captions'] = true;
 
@@ -111,7 +111,7 @@ class photoswipe_plugin_options {
 			photoswipe_plugin_options::pSwipe_getOptions();
 		}
 
-		add_submenu_page( 'options-general.php', 'PhotoSwipe options', 'PhotoSwipe', apply_filters( 'photoswipe_menu_capability', 'edit_theme_options' ), basename(__FILE__), array('photoswipe_plugin_options', 'display'));
+		add_submenu_page( 'options-general.php', 'PhotoSwipe options', 'PhotoSwipe', 'edit_theme_options', basename(__FILE__), array('photoswipe_plugin_options', 'display'));
 	}
 
 
@@ -329,6 +329,7 @@ add_action('wp_enqueue_scripts', 'photoswipe_scripts_method');
 add_shortcode( 'gallery', 'photoswipe_shortcode' );
 add_shortcode( 'photoswipe', 'photoswipe_shortcode' );
 
+
 function photoswipe_shortcode( $attr ) {
 
 	global $post;
@@ -344,8 +345,6 @@ function photoswipe_shortcode( $attr ) {
 		$attr['include'] = $attr['ids'];
 	}
 
-	if( empty($options['item_count']) ) $options['item_count'] = 20;
-
 	$args = shortcode_atts(array(
 		'id' 				=> intval($post->ID),
 		'show_controls' 	=> $options['show_controls'],
@@ -360,6 +359,7 @@ function photoswipe_shortcode( $attr ) {
 
 	$photoswipe_count += 1;
 	$post_id = intval($post->ID) . '_' . $photoswipe_count;
+
 
 	$output_buffer='';
 
@@ -386,6 +386,7 @@ function photoswipe_shortcode( $attr ) {
 
 		$columns = intval($args['columns']);
         $itemwidth = $columns > 0 ? floor(100/$columns) : 100;
+
 
 		$output_buffer .= "
 
@@ -472,7 +473,7 @@ function photoswipe_shortcode( $attr ) {
 			$i = 0;
 			foreach ( $attachments as $aid => $attachment ) {
 				$i++;
-				$thumb = wp_get_attachment_image_src( $aid , apply_filters( 'photoswipe_thumbnail_size', 'photoswipe_thumbnails') );
+				$thumb = wp_get_attachment_image_src( $aid , 'photoswipe_thumbnails');
 				$full = wp_get_attachment_image_src( $aid , 'photoswipe_full');
 				$_post = get_post($aid);
 				$image_title = esc_attr($_post->post_title);
@@ -499,20 +500,13 @@ function photoswipe_shortcode( $attr ) {
 			var grid_".$post_id.";";
 
 			if(!$options['use_masonry']){
-				
-				$masonry_options = "
-						// options...
-						itemSelector: '.msnry_item',
-						//columnWidth: ".$options['thumbnail_width'].",
-						isFitWidth: true
-					";
-				
-				$masonry_options = apply_filters( 'photoswipe_masonry_options', $masonry_options );
-			
-				$output_buffer .="
+				 $output_buffer .="
 					// initialize Masonry after all images have loaded
 					grid_".$post_id." = jQuery('#psgal_".$post_id."').masonry({
-						" .$masonry_options. "
+					  // options...
+					  itemSelector: '.msnry_item',
+					  //columnWidth: ".$options['thumbnail_width'].",
+					  isFitWidth: true
 					});
 
 					grid_".$post_id.".imagesLoaded().progress( function() {
