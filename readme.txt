@@ -52,16 +52,6 @@ Want to contribute? See the GitHub repo (https://github.com/thriveweb/photoswipe
 
 == Changelog ==
 
-= 1.2.61 =
-* Enhancement #2: now checks fig caption, title, alt and filename for image caption
-* Enhancement #10: show all the images on a page in one gallery 
-  (only includes images which link to an image)
-* Enhancement #13: image sizes and thumbnail rebuilds unnecessary
-* Enhancement #14: handle native Wordpress gallery size requested by user.
-Since Wordpress image size is a maximum but gallery width is a minimum, js currently uses
-Wordpress max-width/2 for the gallery thumbnail width for medium and large images to avoid undue scaling of tall portrait images.  
-(Thumbnail size gallery uses thumbnail images at actual size since these are normally square in any case)
-
 = 1.2.6 =
 * Centered image fix
 * History glitch fix
