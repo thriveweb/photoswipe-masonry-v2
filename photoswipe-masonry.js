@@ -4,127 +4,130 @@ jQuery(function($) {
 
 var photoswipe_masonry = function($){
 
-	var $pswp = $('.pswp')[0];
-	var image = [];
+  var $pswp = $('.pswp')[0];
+  var image = [];
 
-	/////////////////////////////////////////////////////////////////////////////////////////////
-	// Gallery
-	$('.psgal').each( function() {
+  /////////////////////////////////////////////////////////////////////////////////////////////
+  // Gallery
+    //in this case the psgal class is actually on the <body> 
+    //so only the first gallery is used to swipe through all the images
+    //If you want separate galleries within article gallery of images in the text, 
+    //then you need to decide how to handle nested galleries and image index numbers
+    var $psgal     = $('.psgal').first();
+    $galleryUID = $psgal.attr('id');
+    if (undefined===$galleryUID) {
+      $psgal.attr('id', 'psgalmain');
+      $galleryUID = 'psgalmain';
+    }
+    getItems = function() {
+      var items = [];
+      $psgal.find('a').each(function() {
+        //only if the link actually contains an image
+        var $img = $(this).find('img').first();
+        if ($img.length){
+          var $href   = $(this).attr('href');
+          var $ext = $href.split('.').pop();
+          switch($ext) {
+          case "jpg":
+          case "png":
+          case "jpeg":
 
-		var $pic     = $(this),
-		getItems = function() {
-			var items = [];
-			$pic.find('a').each(function() {
+            //default src width and height: TODO: alternative way of getting real dimensions if size missing
+            var $width = 1800;
+            var $height = 1800;
+            var $size   = $(this).attr('data-size');
+            if ($size){
+              $size=$size.split('x');
+              if ($size.length>1){
+                $width  = $size[0];
+                $height = $size[1];
+              }
+            }
+            else{
+              //if no saved size, use the ratio of the small image as basis for calculation..
+              //..works great for images within an article
+              var $imgWidth = $img.attr('width');
+              var $imgHeight = $img.attr('height');
+              try {
+                $height=$width*$imgHeight/$imgWidth;
+              }
+              catch(e){}
+            }
+            
+            //ADDED: set item photoswipe index to avoid recalculating it later
+            $(this).attr('data-psindex', items.length);
 
-				var $href   = $(this).attr('href'),
-					$size   = $(this).data('size').split('x'),
-					$width  = $size[0],
-					$height = $size[1];
+            //$img = $(this).find('img');
+            $title = $(this).attr('data-caption');
+            if (!($title)) {
+              $figcaption = $(this).find('figcaption');
+              $title = $figcaption.val();
+              if (!($title)) {
+                $title= $img.attr('title');
+                if (!($title)) {
+                  $title= $img.attr('alt');
+                  if (!($title)) {
+                    $title=$href.substring($href.lastIndexOf('/')+1);
+                  }
+                }
+              }
+            };
 
-				var item = {
-					src 	: $href,
-					w   	: $width,
-					h   	: $height,
-					el		: $(this),
-					msrc	: $(this).find('img').attr('src'),
-					title	: $(this).attr('data-caption')
-				}
-				items.push(item);
-			});
-			return items;
-		}
+              
+            var item = {
+              src 	: $href,
+              w   	: $width, 
+              h   	: $height,
+              el		: $(this),
+              msrc	: $img.attr('src'),
+              title	: $title
+            }
+            items.push(item);
 
-		var items = getItems();
+          break;
+          default:
+            //If the link is to a separate document, don't use the photoswipe
+            //(unless the photoswipe supports popup pages not just images
+            // - actually http://photoswipe.com/ does support html in the gallery, 
+            // that could be a cool enhancement late..)
+          }
+        }
+      });
+      return items;
+    }
 
-		$.each(items, function(index, value) {
-			image[index]     = new Image();
-			image[index].src = value['src'];
-		});
+    var items = getItems();
+    $.each(items, function(index, value) {
+      image[index]     = new Image();
+      image[index].src = value['src'];
+    });
 
-		$pic.on('click', 'figure', function(event) {
+    $psgal.on('click', 'a[data-psindex]', function(event) {
 
-			event.preventDefault();
-			var $index = $(this).index();
+      event.preventDefault();
+      var $index = 0;
+      try{
+        $index=Number($(this).attr('data-psindex'));
+      }
+      catch(e){
+      }
+      
+      var options = {
+        index: $index,
+        bgOpacity: 0.9,
+        showHideOpacity: false,
+        galleryUID: $galleryUID,
+        getThumbBoundsFn: function(index) {
+          var image = items[index].el.find('img'),
+          offset = image.offset();
+          return {x:offset.left, y:offset.top, w:image.width()};
+        }
+      }
 
-			var options = {
-				index: $index,
-				shareEl: false,
-				bgOpacity: 0.9,
-				showHideOpacity: false,
-				galleryUID: $(this).parents('.psgal').attr('id'),
-				getThumbBoundsFn: function(index) {
-					var image = items[index].el.find('img'),
-					offset = image.offset();
-					return {x:offset.left, y:offset.top, w:image.width()};
-				}
-			}
+      var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
+      lightBox.init();
 
-			var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
-			lightBox.init();
-
-		});
-
-	});
-
-	/////////////////////////////////////////////////////////////////////////////////////////////
-	// Single image
-	$('.single_photoswipe').each( function() {
-
-		var $pic     = $(this),
-		getItems = function() {
-			var items = [];
-			$pic.each(function() {
-				var $href   = $(this).attr('href'),
-					$size   = $(this).data('size').split('x'),
-					$width  = $size[0],
-					$height = $size[1];
-
-				var item = {
-					src : $href,
-					w   : $width,
-					h   : $height,
-					el	: $(this),
-					msrc: $(this).find('img').attr('src')
-				}
-
-				items.push(item);
-			});
-			return items;
-		}
-
-		var items = getItems();
-
-		$.each(items, function(index, value) {
-			image[index]     = new Image();
-			image[index].src = value['src'];
-		});
-
-		$pic.on('click', null, function(event) {
-
-			console.log('x');
-
-			event.preventDefault();
-
-			var $index = $(this).index();
-
-			var options = {
-				index: $index,
-				shareEl: false,
-				//galleryUID: $(this).parent().attr('id'),
-				//bgOpacity: 0.9,
-				//showHideOpacity: true,
-				getThumbBoundsFn: function(index) {
-					var image = items[index].el.find('img'),
-					offset = image.offset();
-					return {x:offset.left, y:offset.top, w:image.width()};
-				}
-			}
-
-			var lightBox = new PhotoSwipe($pswp, PhotoSwipeUI_Default, items, options);
-			lightBox.init();
-		});
-
-	});
+    });
 
 	/////////////////////////////////////////////////////////////////////////////////////////////
 	// Parse URL and open gallery if it contains #&pid=3&gid=1
@@ -132,42 +135,16 @@ var photoswipe_masonry = function($){
 
 	if(hashData.gid) {
 
-		console.log(hashData.gid);
-
 		$('#' + hashData.gid).each( function() {
 
-			var $pic     = $(this),
-			getItems = function() {
+      $index=Number(hashData.pid);
 
-				var items = [];
+      try{
+        
+      }
+      catch(e){
+      }
 
-				$pic.find('a').each(function() {
-
-					var $href   = $(this).attr('href'),
-						$size   = $(this).data('size').split('x'),
-						$width  = $size[0],
-						$height = $size[1];
-
-					var item = {
-						src 	: $href,
-						w   	: $width,
-						h   	: $height,
-						el		: $(this),
-						msrc	: $(this).find('img').attr('src'),
-						title	: $(this).attr('data-caption')
-					}
-					items.push(item);
-				});
-				return items;
-			}
-
-			var items = getItems();
-			$.each(items, function(index, value) {
-				image[index]     = new Image();
-				image[index].src = value['src'];
-			});
-
-			var $index = $(this).index();
 			var options = {
 				index: $index,
 				bgOpacity: 0.9,
@@ -186,6 +163,11 @@ var photoswipe_masonry = function($){
 		});
 	}
 };
+
+ 
+
+
+
 
 var parseHash = function() {
 
