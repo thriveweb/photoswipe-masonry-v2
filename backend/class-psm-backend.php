@@ -15,6 +15,7 @@ class Backend {
 		// register functions
 		add_action('admin_menu', array('Backend', 'update'));
 		add_action('admin_head', array('Backend', 'set_head'));
+		add_action('save_post', array('Backend', 'photoswipe_save_post', 10, 3));
 	}
 
 	public static function update() {
@@ -47,9 +48,31 @@ class Backend {
 	}
 
 	public static function set_head() {
-		ob_start(); ?>
-		<link rel="stylesheet" type="text/css" href="<?= plugins_url( '/css/style.css', __FILE__ ) ?>" />
-		<?php
-		echo ob_get_clean();
+		include_once('psm-backend-head.php');
+		echo get_backend_head();
+	}
+
+	public static function photoswipe_save_post($post_id, $post, $update) {
+		$post_content = $post->post_content;
+		$new_content = preg_replace_callback('/(<a((?!data\-size)[^>])+href=["\'])([^"\']*)(["\']((?!data\-size)[^>])*><img)/i', 'photoswipe_save_post_callback', $post_content);
+		if ($new_content && $new_content !== $post_content) {
+			remove_action('save_post', 'photoswipe_save_post', 10, 3);
+			wp_update_post(array('ID' => $post_id, 'post_content' => $new_content));
+			add_action('save_post', 'photoswipe_save_post', 10, 3);
+		}
+	}
+
+	public static function photoswipe_save_post_callback($matches) {
+		$before = $matches[1];
+		$image_url = $matches[3];
+		$after = $matches[4];
+		$id = fjarrett_get_attachment_id_by_url($image_url);
+		if ($id) {
+			$image_attributes = wp_get_attachment_image_src($id, 'original');
+			if ($image_attributes) {
+				$before = str_replace('<a ', '<a class="single_photoswipe" data-size="' . $image_attributes[1] . 'x' . $image_attributes[2] . '" ', $before);
+			}
+		}
+		return $before . $image_url . $after;
 	}
 }

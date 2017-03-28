@@ -39,6 +39,7 @@ require_once(plugin_dir_path( __FILE__ ) . 'includes/class-photoswipe-options.ph
 require_once(plugin_dir_path( __FILE__ ) . 'includes/class-psm-settings.php');
 require_once(plugin_dir_path( __FILE__ ) . 'backend/class-psm-backend.php');
 require_once(plugin_dir_path( __FILE__ ) . 'frontend/class-psm-frontend.php');
+require_once(plugin_dir_path( __FILE__ ) . 'includes/psm-functions.php');
 
 $psm_vars = array (
 	'plugin_url_path' => plugins_url() . '/photoswipe-masonry',
