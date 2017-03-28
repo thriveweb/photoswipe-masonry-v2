@@ -4,13 +4,13 @@ Plugin Name: Photoswipe Masonry
 Plugin URI: http://thriveweb.com.au/the-lab/photoswipe/
 Description: This is a image gallery plugin for WordPress built using PhotoSwipe from  Dmitry Semenov.
 <a href="http://photoswipe.com/">PhotoSwipe</a>
-Author: Dean Oakley
+Author: Thrive Web
 Author URI: http://thriveweb.com.au/
-Version: 1.2.6
+Version: 2.0
 Text Domain: photoswipe-masonry
 */
 
-/*  Copyright 2010  Dean Oakley  (email : dean@thriveweb.com.au)
+/*  Copyright 2017  Thrive Web  (email : contact@thriveweb.com.au)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License, version 2, as
@@ -35,11 +35,11 @@ if(preg_match('#' . basename(__FILE__) . '#', $_SERVER['PHP_SELF'])) {
 	die('Illegal Entry');
 }
 
-require_once(plugin_dir_path( __FILE__ ) . 'includes/class-photoswipe-options.php');
-require_once(plugin_dir_path( __FILE__ ) . 'includes/class-psm-settings.php');
-require_once(plugin_dir_path( __FILE__ ) . 'backend/class-psm-backend.php');
-require_once(plugin_dir_path( __FILE__ ) . 'frontend/class-psm-frontend.php');
-require_once(plugin_dir_path( __FILE__ ) . 'includes/psm-functions.php');
+require_once(plugin_dir_path(__FILE__) . 'includes/class-photoswipe-options.php');
+require_once(plugin_dir_path(__FILE__) . 'includes/class-psm-settings.php');
+require_once(plugin_dir_path(__FILE__) . 'backend/class-psm-backend.php');
+require_once(plugin_dir_path(__FILE__) . 'frontend/class-psm-frontend.php');
+require_once(plugin_dir_path(__FILE__) . 'includes/psm-functions.php');
 
 $psm_vars = array (
 	'plugin_url_path' => plugins_url() . '/photoswipe-masonry',

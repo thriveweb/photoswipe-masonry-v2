@@ -63,7 +63,6 @@ function get_style($photoswipe_options) {
     display:none;
   }
   <?php endif; ?>
-
   </style>
   <?php
   return ob_get_clean();

@@ -21,7 +21,7 @@ if (!function_exists('fjarrett_get_attachment_id_by_url')) :
 		if (!isset($parsed_url[1]) || empty($parsed_url[1]) || ($this_host != $file_host)) {
 			return;
 		}
-		global $wpdb;
+		Global $wpdb;
 		$prefix = is_multisite() ? $wpdb->base_prefix : $wpdb->prefix;
 		$attachment = $wpdb->get_col($wpdb->prepare("SELECT ID FROM {$prefix}posts WHERE guid RLIKE %s;", $parsed_url[1]));
 		return $attachment[0];

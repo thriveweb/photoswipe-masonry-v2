@@ -12,7 +12,6 @@ class Backend {
 	public static function init() {
 		Global $psm_vars;
 		self::$photoswipe_options = &$psm_vars['photoswipe_options'];
-		// register functions
 		add_action('admin_menu', array('Backend', 'update'));
 		add_action('admin_head', array('Backend', 'set_head'));
 		add_action('save_post', array('Backend', 'photoswipe_save_post', 10, 3));

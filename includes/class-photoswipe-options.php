@@ -6,9 +6,9 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 class Photoswipe_Options {
-  public static function get_options() {
-    $options = get_option('photoswipe_options');
 
+	public static function get_options() {
+		$options = get_option('photoswipe_options');
 		if (!is_array($options)) {
 			$options = array (
 				'show_controls' => false,
@@ -21,10 +21,8 @@ class Photoswipe_Options {
 				'max_image_width' => '1800',
 				'white_theme' => false
 			);
-
 			update_option('photoswipe_options', $options);
 		}
-
 		return $options;
-  }
+	}
 }
