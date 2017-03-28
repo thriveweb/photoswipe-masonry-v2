@@ -307,6 +307,7 @@ function photoswipe_scripts_method() {
 	wp_enqueue_script('jquery');
 	//Core JS file
 	wp_enqueue_script( 'photoswipe', 			$photoswipe_wp_plugin_path . '/photoswipe-dist/photoswipe.min.js');
+	wp_enqueue_script( 'photoswipe-masonry-js', $photoswipe_wp_plugin_path . '/photoswipe-masonry.js');
 	//UI JS file
 	wp_enqueue_script( 'photoswipe-ui-default', $photoswipe_wp_plugin_path . '/photoswipe-dist/photoswipe-ui-default.min.js');
 	//Masonry - re-named to move to header
@@ -452,9 +453,7 @@ function photoswipe_shortcode( $attr ) {
 						data-src="<?= $thumb[0] ?>"
 						src="<?= ($i <= $args['item_count'] ? $thumb[0] : '') ?>"
 						itemprop="thumbnail"
-						alt="<?= $image_alttext ?>"
-						srcset="<?= esc_attr( $img_srcset ); ?>"
-			      sizes="(max-width: 50em) 87vw, 680px" />
+						alt="<?= $image_alttext ?>" />
 					</a>
 					<figcaption class="photoswipe-gallery-caption"><?= $image_caption ?></figcaption>
 				</figure>

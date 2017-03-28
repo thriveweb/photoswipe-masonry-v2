@@ -36,16 +36,10 @@ var photoswipe_masonry = function($){
 
 		var items = getItems();
 
-		$.each(items, function(index, value) {
-			image[index]     = new Image();
-			image[index].src = value['src'];
-		});
-
 		$pic.on('click', 'figure', function(event) {
 
 			event.preventDefault();
 			var $index = $(this).index();
-
 			var options = {
 				index: $index,
 				shareEl: false,
@@ -94,17 +88,8 @@ var photoswipe_masonry = function($){
 
 		var items = getItems();
 
-		$.each(items, function(index, value) {
-			image[index]     = new Image();
-			image[index].src = value['src'];
-		});
-
 		$pic.on('click', null, function(event) {
-
-			console.log('x');
-
 			event.preventDefault();
-
 			var $index = $(this).index();
 
 			var options = {
@@ -131,8 +116,6 @@ var photoswipe_masonry = function($){
 	var hashData = parseHash();
 
 	if(hashData.gid) {
-
-		console.log(hashData.gid);
 
 		$('#' + hashData.gid).each( function() {
 
@@ -162,11 +145,6 @@ var photoswipe_masonry = function($){
 			}
 
 			var items = getItems();
-			$.each(items, function(index, value) {
-				image[index]     = new Image();
-				image[index].src = value['src'];
-			});
-
 			var $index = $(this).index();
 			var options = {
 				index: $index,
