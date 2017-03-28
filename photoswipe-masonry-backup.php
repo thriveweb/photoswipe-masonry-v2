@@ -181,7 +181,7 @@ function pSwipe_getOption($option) {
 // register functions
 // add_action('admin_menu', array('photoswipe_plugin_options', 'update'));
 
-$options = get_option('photoswipe_options');
+// $options = get_option('photoswipe_options');
 
 //image sizes - No cropping for a nice zoom effect
 // add_image_size('photoswipe_thumbnails', $options['thumbnail_width'] * 2, $options['thumbnail_height'] * 2, false);
@@ -197,20 +197,20 @@ $options = get_option('photoswipe_options');
 // add_action('wp_footer', 'photoswipe_footer');
 
 //Link attachments
-function photoswipe_get_attachment_link($link, $id, $size, $permalink, $icon, $text ) {
-	if( $permalink === false && !$text && 'none' != $size ) {
-		$_post = get_post( $id );
-		$image_attributes = wp_get_attachment_image_src( $_post->ID, 'original' );
+// function photoswipe_get_attachment_link($link, $id, $size, $permalink, $icon, $text ) {
+// 	if( $permalink === false && !$text && 'none' != $size ) {
+// 		$_post = get_post( $id );
+// 		$image_attributes = wp_get_attachment_image_src( $_post->ID, 'original' );
+//
+// 		if( $image_attributes ) {
+// 			$link = str_replace('<a ', '<a data-size="' . $image_attributes[1] . 'x' . $image_attributes[2] . '" ', $link);
+// 		}
+// 	}
+//
+// 	return $link;
+// }
 
-		if( $image_attributes ) {
-			$link = str_replace('<a ', '<a data-size="' . $image_attributes[1] . 'x' . $image_attributes[2] . '" ', $link);
-		}
-	}
-
-	return $link;
-}
-
-add_filter( 'wp_get_attachment_link', 'photoswipe_get_attachment_link', 10, 6 );
+// add_filter( 'wp_get_attachment_link', 'photoswipe_get_attachment_link', 10, 6 );
 
 //Update embeds on save
 function photoswipe_save_post( $post_id, $post, $update ) {
@@ -242,12 +242,12 @@ function photoswipe_save_post_callback( $matches ) {
 	return $before . $image_url . $after;
 }
 
-function photoswipe_kses_allow_attributes() {
-	global $allowedposttags;
-	$allowedposttags['a']['data-size'] = array();
-}
-
-add_action( 'init', 'photoswipe_kses_allow_attributes' );
+// function photoswipe_kses_allow_attributes() {
+// 	global $allowedposttags;
+// 	$allowedposttags['a']['data-size'] = array();
+// }
+//
+// add_action( 'init', 'photoswipe_kses_allow_attributes' );
 
 if( !function_exists('fjarrett_get_attachment_id_by_url') ) :
 	/**
@@ -287,38 +287,38 @@ if( !function_exists('fjarrett_get_attachment_id_by_url') ) :
 endif;
 
 
-function photoswipe_scripts_method() {
-	$options = get_option('photoswipe_options');
-	$photoswipe_wp_plugin_path =  plugins_url() . '/photoswipe-masonry' ;
+// function photoswipe_scripts_method() {
+// 	$options = get_option('photoswipe_options');
+// 	$photoswipe_wp_plugin_path =  plugins_url() . '/photoswipe-masonry' ;
+//
+// 	wp_enqueue_style( 'photoswipe-core-css',	$photoswipe_wp_plugin_path . '/photoswipe-dist/photoswipe.css');
+//
+// 	// Skin CSS file (optional)
+// 	// In folder of skin CSS file there are also:
+// 	// - .png and .svg icons sprite,
+// 	// - preloader.gif (for browsers that do not support CSS animations)
+// 	if ($options['white_theme']) {
+// 		wp_enqueue_style( 'white_theme', $photoswipe_wp_plugin_path . '/photoswipe-dist/white-skin/skin.css' );
+// 	}
+// 	else {
+// 		wp_enqueue_style( 'pswp-skin', $photoswipe_wp_plugin_path . '/photoswipe-dist/default-skin/default-skin.css' );
+// 	}
+//
+// 	wp_enqueue_script('jquery');
+// 	//Core JS file
+// 	wp_enqueue_script( 'photoswipe', 			$photoswipe_wp_plugin_path . '/photoswipe-dist/photoswipe.min.js');
+// 	wp_enqueue_script( 'photoswipe-masonry-js', $photoswipe_wp_plugin_path . '/photoswipe-masonry.js');
+// 	//UI JS file
+// 	wp_enqueue_script( 'photoswipe-ui-default', $photoswipe_wp_plugin_path . '/photoswipe-dist/photoswipe-ui-default.min.js');
+// 	//Masonry - re-named to move to header
+// 	wp_enqueue_script( 'photoswipe-masonry', 	$photoswipe_wp_plugin_path . '/masonry.pkgd.min.js','','',false);
+// 	//imagesloaded
+// 	wp_enqueue_script( 'photoswipe-imagesloaded', 			$photoswipe_wp_plugin_path . '/imagesloaded.pkgd.min.js');
+// }
 
-	wp_enqueue_style( 'photoswipe-core-css',	$photoswipe_wp_plugin_path . '/photoswipe-dist/photoswipe.css');
-
-	// Skin CSS file (optional)
-	// In folder of skin CSS file there are also:
-	// - .png and .svg icons sprite,
-	// - preloader.gif (for browsers that do not support CSS animations)
-	if ($options['white_theme']) {
-		wp_enqueue_style( 'white_theme', $photoswipe_wp_plugin_path . '/photoswipe-dist/white-skin/skin.css' );
-	}
-	else {
-		wp_enqueue_style( 'pswp-skin', $photoswipe_wp_plugin_path . '/photoswipe-dist/default-skin/default-skin.css' );
-	}
-
-	wp_enqueue_script('jquery');
-	//Core JS file
-	wp_enqueue_script( 'photoswipe', 			$photoswipe_wp_plugin_path . '/photoswipe-dist/photoswipe.min.js');
-	wp_enqueue_script( 'photoswipe-masonry-js', $photoswipe_wp_plugin_path . '/photoswipe-masonry.js');
-	//UI JS file
-	wp_enqueue_script( 'photoswipe-ui-default', $photoswipe_wp_plugin_path . '/photoswipe-dist/photoswipe-ui-default.min.js');
-	//Masonry - re-named to move to header
-	wp_enqueue_script( 'photoswipe-masonry', 	$photoswipe_wp_plugin_path . '/masonry.pkgd.min.js','','',false);
-	//imagesloaded
-	wp_enqueue_script( 'photoswipe-imagesloaded', 			$photoswipe_wp_plugin_path . '/imagesloaded.pkgd.min.js');
-}
-
-add_action('wp_enqueue_scripts', 'photoswipe_scripts_method');
-add_shortcode( 'gallery', 'photoswipe_shortcode' );
-add_shortcode( 'photoswipe', 'photoswipe_shortcode' );
+// add_action('wp_enqueue_scripts', 'photoswipe_scripts_method');
+// add_shortcode( 'gallery', 'photoswipe_shortcode' );
+// add_shortcode( 'photoswipe', 'photoswipe_shortcode' );
 
 function photoswipe_shortcode( $attr ) {
 	global $post;
