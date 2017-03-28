@@ -27,6 +27,7 @@ class Backend {
 				'max_image_width' => stripslashes($_POST['max_image_width']),
 				'max_image_height' => stripslashes($_POST['max_image_height']),
 				'white_theme' => (bool) (isset($_POST['white_theme']) ? true : false),
+				'crop_thumbnails' => (bool) (isset($_POST['crop_thumbnails']) ? true : false),
 				'show_controls' => (bool) (isset($_POST['show_controls']) ? true : false),
 				'show_captions' => (bool) (isset($_POST['show_captions']) ? true : false),
 				'use_masonry' => (bool) (isset($_POST['use_masonry']) ? true : false),

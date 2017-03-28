@@ -6,7 +6,7 @@ function get_style($photoswipe_options) {
   <style type='text/css'>
   .psgal {
     margin: auto;
-    padding-bottom:40px;
+    padding-bottom: 40px;
     -webkit-transition: all 0.4s ease;
     -moz-transition: all 0.4s ease;
     -o-transition: all 0.4s ease;
@@ -18,7 +18,7 @@ function get_style($photoswipe_options) {
   }
 
   .psgal.photoswipe_showme{
-    opacity:1;
+    opacity: 1;
   }
 
   .psgal figure {
@@ -31,27 +31,27 @@ function get_style($photoswipe_options) {
     width: <?= $photoswipe_options['thumbnail_width'] . 'px' ?>;
     padding: 5px;
     margin: 0px;
-    box-sizing:border-box;
+    box-sizing: border-box;
   }
 
   .psgal a{
-    display:block;
+    display: block;
   }
 
   .psgal img {
-    margin:auto;
-    max-width:100%;
+    margin: auto;
+    max-width: 100%;
     width: auto;
     height: auto;
     border: 0;
   }
 
   .psgal figure figcaption{
-    font-size:13px;
+    font-size: 13px;
   }
 
   .msnry{
-    margin:auto;
+    margin: auto;
   }
 
   .pswp__caption__center{
@@ -60,7 +60,7 @@ function get_style($photoswipe_options) {
 
   <?php if(!$photoswipe_options['show_captions']) : ?>
   .photoswipe-gallery-caption{
-    display:none;
+    display: none;
   }
   <?php endif; ?>
   </style>

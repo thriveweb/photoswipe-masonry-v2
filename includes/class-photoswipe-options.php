@@ -19,7 +19,8 @@ class Photoswipe_Options {
 				'thumbnail_height' => 150,
 				'max_image_height' => '2400',
 				'max_image_width' => '1800',
-				'white_theme' => false
+				'white_theme' => false,
+				'crop_thumbnails' => false
 			);
 			update_option('photoswipe_options', $options);
 		}

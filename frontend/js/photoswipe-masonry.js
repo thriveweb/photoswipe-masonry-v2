@@ -49,7 +49,11 @@ var photoswipe_masonry = function($){
 				getThumbBoundsFn: function(index) {
 					var image = items[index].el.find('img'),
 					offset = image.offset();
-					return {x:offset.left, y:offset.top, w:image.width()};
+					return {
+						x: offset.left + (image.width() / 2),
+						y: offset.top + (image.height() / 2),
+						w: 0
+					};
 				}
 			}
 
@@ -101,7 +105,11 @@ var photoswipe_masonry = function($){
 				getThumbBoundsFn: function(index) {
 					var image = items[index].el.find('img'),
 					offset = image.offset();
-					return {x:offset.left, y:offset.top, w:image.width()};
+					return {
+						x: offset.left + (image.width() / 2),
+						y: offset.top + (image.height() / 2),
+						w: 0
+					};
 				}
 			}
 
@@ -154,7 +162,11 @@ var photoswipe_masonry = function($){
 				getThumbBoundsFn: function(index) {
 					var image = items[index].el.find('img'),
 					offset = image.offset();
-					return {x:offset.left, y:offset.top, w:image.width()};
+					return {
+						x: offset.left + (image.width() / 2),
+						y: offset.top + (image.height() / 2),
+						w: 0
+					};
 				}
 			}
 

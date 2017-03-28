@@ -56,6 +56,12 @@ function show_settings_view($options) {
 			</p>
 			<p>
 				<label>
+					<input name="crop_thumbnails" type="checkbox" value="checkbox" <?= $options['crop_thumbnails'] ? "checked='checked'" : '' ?> />
+					Crop thumbnails?
+				</label>
+			</p>
+			<p>
+				<label>
 					<input name="show_captions" type="checkbox" value="checkbox" <?= $options['show_captions'] ? "checked='checked'" :  ''; ?> />
 					Show captions on thumbnails?
 				</label>
