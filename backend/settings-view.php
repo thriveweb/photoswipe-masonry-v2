@@ -6,6 +6,7 @@ if ( ! defined( 'WPINC' ) ) {
 
 function show_settings_view($options) {
 	ob_start();
+	Regenerate_Thumbnails::get_regeneration_form();
 	?>
 	<div id="photoswipe_admin" class="wrap">
 		<div class="head">

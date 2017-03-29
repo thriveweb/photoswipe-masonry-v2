@@ -2,16 +2,30 @@
 
 class Regenerate_Thumbnails {
 
+  public static function get_regeneration_form() {
+    ob_start();
+    ?>
+    <form id="rt-form" method="post" action="" style="display:none;visibility:hidden;opacity:0;">
+      <?php wp_nonce_field('regenerate-thumbnails') ?>
+      <p>
+        <input type="submit" name="regenerate-thumbnails" value="Regenerate All Thumbnails" />
+      </p>
+    </form>
+    <?php
+    echo ob_get_clean();
+  }
+
   public static function get_start_regeneration_button() {
     if (empty($_POST['regenerate-thumbnails'])) {
       ob_start();
       ?>
-      <form method="post" action="">
-        <?php wp_nonce_field('regenerate-thumbnails') ?>
-        <p>
-          <input type="submit" class="button hide-if-no-js" name="regenerate-thumbnails" id="regenerate-thumbnails" value="Regenerate All Thumbnails" />
-        </p>
-      </form>
+      <button class="button hide-if-no-js" id="rt">Regenerate All Thumbnails</button>
+      <script>
+      jQuery('#rt').on('click', function(e) {
+        e.preventDefault();
+        jQuery('#rt-form input[type="submit"]').trigger('click');
+      });
+      </script>
       <?php
       echo ob_get_clean();
     }
@@ -20,12 +34,12 @@ class Regenerate_Thumbnails {
   public static function regenerate_thumbnails_log() {
     global $wpdb;
     ob_start();
-    ?>
-    <div id="message" class="updated fade" style="display:none"></div>
-    <div class="wrap regenthumbs">
-      <?php
-      // If the button was clicked
-      if (!empty($_POST['regenerate-thumbnails'])) {
+    // If the button was clicked
+    if (!empty($_POST['regenerate-thumbnails'])) {
+      ?>
+      <div id="message" class="updated fade" style="display:none"></div>
+      <div class="wrap regenthumbs">
+        <?php
         // Get all attachment ids from database
         if (!$images = $wpdb->get_results("SELECT ID FROM $wpdb->posts WHERE post_type = 'attachment' AND post_mime_type LIKE 'image/%' ORDER BY ID DESC")) {
           echo '<p>' . sprintf(__("Unable to find any images. Are you sure <a href='%s'>some exist</a>?", 'regenerate-thumbnails'), admin_url( 'upload.php?post_mime_type=image' ) ) . "</p></div>";
@@ -60,21 +74,20 @@ class Regenerate_Thumbnails {
         </ol>
 
         <script type="text/javascript">
-        // <![CDATA[
         jQuery(document).ready(function($){
-          var i;
-          var rt_images = [<?php echo $ids; ?>];
-          var rt_total = rt_images.length;
-          var rt_count = 1;
-          var rt_percent = 0;
-          var rt_successes = 0;
-          var rt_errors = 0;
-          var rt_failedlist = '';
-          var rt_resulttext = '';
-          var rt_timestart = new Date().getTime();
-          var rt_timeend = 0;
-          var rt_totaltime = 0;
-          var rt_continue = true;
+          var i,
+          rt_images = [<?php echo $ids; ?>],
+          rt_total = rt_images.length,
+          rt_count = 1,
+          rt_percent = 0,
+          rt_successes = 0,
+          rt_errors = 0,
+          rt_failedlist = '',
+          rt_resulttext = '',
+          rt_timestart = new Date().getTime(),
+          rt_timeend = 0,
+          rt_totaltime = 0,
+          rt_continue = true;
 
           // Create the progress bar
           $("#regenthumbs-bar").progressbar();
@@ -99,8 +112,7 @@ class Regenerate_Thumbnails {
               rt_successes = rt_successes + 1;
               $("#regenthumbs-debug-successcount").html(rt_successes);
               $("#regenthumbs-debuglist").append("<li>" + response.success + "</li>");
-            }
-            else {
+            } else {
               rt_errors = rt_errors + 1;
               rt_failedlist = rt_failedlist + ',' + id;
               $("#regenthumbs-debug-failurecount").html(rt_errors);
@@ -140,15 +152,13 @@ class Regenerate_Thumbnails {
 
                 if ( response.success ) {
                   RegenThumbsUpdateStatus( id, true, response );
-                }
-                else {
+                } else {
                   RegenThumbsUpdateStatus( id, false, response );
                 }
 
                 if ( rt_images.length && rt_continue ) {
                   RegenThumbs( rt_images.shift() );
-                }
-                else {
+                } else {
                   RegenThumbsFinishUp();
                 }
               },
@@ -157,8 +167,7 @@ class Regenerate_Thumbnails {
 
                 if ( rt_images.length && rt_continue ) {
                   RegenThumbs( rt_images.shift() );
-                }
-                else {
+                } else {
                   RegenThumbsFinishUp();
                 }
               }
@@ -167,14 +176,10 @@ class Regenerate_Thumbnails {
 
           RegenThumbs( rt_images.shift() );
         });
-        // ]]>
         </script>
-        <?php
-      }
-      ?>
-    </div>
-
-    <?php
+      </div>
+      <?php
+    }
     echo ob_get_clean();
   }
 
@@ -187,22 +192,26 @@ class Regenerate_Thumbnails {
     $id = (int) $_REQUEST['id'];
     $image = get_post( $id );
 
-    if ( ! $image || 'attachment' != $image->post_type || 'image/' != substr( $image->post_mime_type, 0, 6 ) )
-    die( json_encode( array( 'error' => sprintf( __( 'Failed resize: %s is an invalid image ID.', 'regenerate-thumbnails' ), esc_html( $_REQUEST['id'] ) ) ) ) );
+    if ( ! $image || 'attachment' != $image->post_type || 'image/' != substr( $image->post_mime_type, 0, 6 ) ) {
+      die( json_encode( array( 'error' => sprintf( __( 'Failed resize: %s is an invalid image ID.', 'regenerate-thumbnails' ), esc_html( $_REQUEST['id'] ) ) ) ) );
+    }
 
     $fullsizepath = get_attached_file( $image->ID );
 
-    if ( false === $fullsizepath || ! file_exists( $fullsizepath ) )
-    self::die_json_error_msg( $image->ID, sprintf( __( 'The originally uploaded image file cannot be found at %s', 'regenerate-thumbnails' ), '<code>' . esc_html( $fullsizepath ) . '</code>' ) );
+    if ( false === $fullsizepath || ! file_exists( $fullsizepath ) ) {
+      self::die_json_error_msg( $image->ID, sprintf( __( 'The originally uploaded image file cannot be found at %s', 'regenerate-thumbnails' ), '<code>' . esc_html( $fullsizepath ) . '</code>' ) );
+    }
 
     @set_time_limit( 900 ); // 5 minutes per image should be PLENTY
 
     $metadata = wp_generate_attachment_metadata( $image->ID, $fullsizepath );
 
-    if ( is_wp_error( $metadata ) )
-    self::die_json_error_msg( $image->ID, $metadata->get_error_message() );
-    if ( empty( $metadata ) )
-    self::die_json_error_msg( $image->ID, __( 'Unknown failure reason.', 'regenerate-thumbnails' ) );
+    if ( is_wp_error( $metadata ) ) {
+      self::die_json_error_msg( $image->ID, $metadata->get_error_message() );
+    }
+    if ( empty( $metadata ) ) {
+      self::die_json_error_msg( $image->ID, __( 'Unknown failure reason.', 'regenerate-thumbnails' ) );
+    }
 
     // If this fails, then it just means that nothing was changed (old value == new value)
     wp_update_attachment_metadata( $image->ID, $metadata );
