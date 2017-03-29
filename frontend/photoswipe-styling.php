@@ -11,7 +11,7 @@ function get_style($photoswipe_options) {
     -moz-transition: all 0.4s ease;
     -o-transition: all 0.4s ease;
     transition: all 0.4s ease;
-    <?php if($photoswipe_options['use_masonry']) : ?>
+    <?php if(!$photoswipe_options['use_masonry']) : ?>
     opacity: 1;
     text-align: center;
     <?php endif; ?>
@@ -23,7 +23,7 @@ function get_style($photoswipe_options) {
 
   .psgal figure {
     float: left;
-    <?php if($photoswipe_options['use_masonry']) : ?>
+    <?php if(!$photoswipe_options['use_masonry']) : ?>
     float: none;
     display: inline-block;
     <?php endif; ?>

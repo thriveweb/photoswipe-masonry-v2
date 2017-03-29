@@ -71,7 +71,7 @@ class Frontend {
 		include_once('photoswipe-html.php');
 		include_once('photoswipe-script.php');
 		echo get_style(self::$photoswipe_options);
-		echo get_html($post_id, $columns, $args, $attachments);
+		echo get_html($post_id, $columns, $args, $attachments, self::$photoswipe_options);
 		echo get_script($post_id, $args, self::$photoswipe_options);
 	}
 

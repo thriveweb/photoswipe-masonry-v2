@@ -1,6 +1,6 @@
 <?php
 
-function get_html($post_id, $columns, $args, $attachments = array()) {
+function get_html($post_id, $columns, $args, $attachments = array(), $photoswipe_options = array()) {
   ob_start();
   ?>
   <div style="clear:both"></div>
@@ -15,11 +15,11 @@ function get_html($post_id, $columns, $args, $attachments = array()) {
         $image_alttext = get_post_meta($aid, '_wp_attachment_image_alt', true);
         $image_caption = $_post->post_excerpt;
         ?>
-        <figure class="msnry_item" itemscope itemtype="http://schema.org/ImageObject" <?= ($i > $args['item_count'] ? 'style="display:none;"' : '') ?>>
+        <figure class="msnry_item" itemscope itemtype="http://schema.org/ImageObject" <?= ($photoswipe_options['use_masonry'] && $i > $args['item_count'] ? 'style="display:none;"' : '') ?>>
           <a href="<?= $full[0] ?>" itemprop="contentUrl" data-size="<?= $full[1] . 'x' . $full[2] ?>" data-caption="<?= $image_caption ?>">
             <img
             data-src="<?= $thumb[0] ?>"
-            src="<?= ($i <= $args['item_count'] ? $thumb[0] : '') ?>"
+            src="<?= ($i <= $args['item_count'] || !$photoswipe_options['use_masonry'] ? $thumb[0] : '') ?>"
             itemprop="thumbnail"
             alt="<?= $image_alttext ?>" />
           </a>

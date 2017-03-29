@@ -14,7 +14,7 @@ class Photoswipe_Options {
 				'show_controls' => false,
 				'item_count' => 10,
 				'show_captions' => true,
-				'use_masonry' => false,
+				'use_masonry' => true,
 				'thumbnail_width' => 150,
 				'thumbnail_height' => 150,
 				'max_image_height' => '2400',
