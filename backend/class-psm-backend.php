@@ -5,6 +5,8 @@ if ( ! defined( 'WPINC' ) ) {
 	die;
 }
 
+require_once(plugin_dir_path(__FILE__) . 'class-regenerate-thumbnails.php');
+
 class Backend {
 
 	private static $photoswipe_options;
@@ -12,9 +14,16 @@ class Backend {
 	public static function init() {
 		Global $psm_vars;
 		self::$photoswipe_options = &$psm_vars['photoswipe_options'];
+		add_action('admin_enqueue_scripts', array('Backend', 'add_scripts'));
 		add_action('admin_menu', array('Backend', 'update'));
 		add_action('admin_head', array('Backend', 'set_head'));
 		add_action('save_post', array('Backend', 'photoswipe_save_post', 10, 3));
+		add_action('wp_ajax_regeneratethumbnail', array('Regenerate_Thumbnails', 'ajax_process_image'));
+	}
+
+	public static function add_scripts() {
+		wp_enqueue_script('jquery-ui-progressbar', plugins_url('jquery-ui/jquery.ui.progressbar.min.js', __FILE__));
+		wp_enqueue_style('jquery-ui-regenthumbs', plugins_url('jquery-ui/redmond/jquery-ui-1.7.2.custom.css', __FILE__));
 	}
 
 	public static function update() {

@@ -12,7 +12,7 @@ function show_settings_view($options) {
 			<h2>PhotoSwipe Masonry Options</h2>
 			<p class="info">
 				PhotoSwipe Masonry is a image gallery plugin for WordPress built using PhotoSwipe from Dmitry Semenov. <a href="http://photoswipe.com/" target="_blank">PhotoSwipe</a><br />
-				Plugin by Thrive Web, <a href="https://thriveweb.com.au/the-lab/" target="_blank">see our plugins</a>.
+				Plugin by <a href="https://thriveweb.com.au/" title="Thrive Web" target="_blank">Thrive Web</a>, <a href="https://thriveweb.com.au/the-lab/" target="_blank">see our plugins</a>.
 			</p>
 			<a class="logo" href="https://thriveweb.com.au/" title="Thrive Web" target="_blank">
 				<img src="<?= plugins_url('photoswipe-masonry/thrive-logo.png') ?>" alt="Logo Thrive Web" />
@@ -45,6 +45,9 @@ function show_settings_view($options) {
 						<input type="text" name="max_image_height" value="<?= ($options['max_image_height']); ?>" />
 					</p>
 				</div>
+				<?php
+				Regenerate_Thumbnails::get_start_regeneration_button();
+				?>
 			</div>
 			<div class="ps_border" ></div>
 			<div>
@@ -84,6 +87,9 @@ function show_settings_view($options) {
 				<input class="button-primary" type="submit" name="photoswipe_save" value="Save Changes" />
 			</p>
 		</form>
+		<?php
+		Regenerate_Thumbnails::regenerate_thumbnails_log();
+		?>
 		<p class="made-by">
 			Made with
 			<svg width="12" height="12" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
