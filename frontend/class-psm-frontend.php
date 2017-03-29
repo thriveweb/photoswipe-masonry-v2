@@ -44,6 +44,7 @@ class Frontend {
 		wp_enqueue_script('jquery');
 		wp_enqueue_script('photoswipe', self::$plugin_url_path . '/dist/photoswipe/photoswipe.min.js');
 		wp_enqueue_script('photoswipe-masonry-js', self::$plugin_url_path . '/frontend/js/photoswipe-masonry.js');
+		wp_enqueue_script('photoswipe-lazyload-js', self::$plugin_url_path . '/frontend/js/photoswipe-lazyload.js');
 		wp_enqueue_script('photoswipe-ui-default', self::$plugin_url_path . '/dist/photoswipe/photoswipe-ui-default.min.js');
 		wp_enqueue_script('photoswipe-masonry', 	self::$plugin_url_path . '/frontend/js/masonry.pkgd.min.js', '', '', false);
 		wp_enqueue_script('photoswipe-imagesloaded', self::$plugin_url_path . '/frontend/js/imagesloaded.pkgd.min.js');
