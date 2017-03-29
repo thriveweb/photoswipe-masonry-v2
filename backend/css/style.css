@@ -1,34 +1,68 @@
-#photoswipe_admin h3{
+#photoswipe_admin h2 {
 	line-height: 24px;
+	padding-right: 150px;
 }
 
-#photoswipe_admin input[type="text"]{
+#photoswipe_admin input[type="text"] {
 	width: 50%;
 	font-size: 12px;
 }
 
-#photoswipe_admin .fl_box{
+#photoswipe_admin .fl_box {
 	float: left;
 	width: 25%;
 }
 
-#photoswipe_admin .ps_border{
-	clear:both; padding-bottom:15px; border-bottom:solid 1px #e6e6e6;
+#photoswipe_admin .ps_border {
+	clear: both;
+	padding-bottom: 15px;
+	border-bottom: solid 1px #e6e6e6;
+}
+
+#photoswipe_admin .made-by {
+	text-align: center;
+	text-transform: uppercase;
+	opacity: .7;
+}
+
+#photoswipe_admin .made-by a {
+	color: inherit;
+	text-decoration: none;
+}
+
+#photoswipe_admin p.info {
+	position: relative;
+	padding-right: 150px;
+}
+
+#photoswipe_admin div.head {
+	position: relative;
+	min-height: 100px;
+}
+
+#photoswipe_admin div.head a.logo {
+	position: absolute;
+	right: 0;
+	top: 0;
 }
 
 @media screen and (max-width: 800px) {
-	
 	#photoswipe_admin .fl_box{
 		float: left;
 		width: 50%;
 	}
-
 }
 
 @media screen and (max-width: 600px) {
-	
-	#photoswipe_admin p,
-	#photoswipe_admin label{
+	#photoswipe_admin p, #photoswipe_admin label{
 		font-size: 10px;
+	}
+
+	#photoswipe_admin p.info, #photoswipe_admin h2 {
+		padding-right: 0;
+	}
+
+	#photoswipe_admin div.head a.logo {
+		display: none;
 	}
 }
