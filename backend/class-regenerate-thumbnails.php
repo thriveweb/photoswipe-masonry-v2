@@ -12,7 +12,7 @@ class Regenerate_Thumbnails {
       </p>
     </form>
     <?php
-    echo ob_get_clean();
+    return ob_get_clean();
   }
 
   public static function get_start_regeneration_button() {
@@ -27,7 +27,7 @@ class Regenerate_Thumbnails {
       });
       </script>
       <?php
-      echo ob_get_clean();
+      return ob_get_clean();
     }
   }
 
@@ -180,7 +180,7 @@ class Regenerate_Thumbnails {
       </div>
       <?php
     }
-    echo ob_get_clean();
+    return ob_get_clean();
   }
 
   // Process a single image ID (this is an AJAX handler)
@@ -203,7 +203,7 @@ class Regenerate_Thumbnails {
     }
 
     @set_time_limit( 900 ); // 5 minutes per image should be PLENTY
-
+    
     $metadata = wp_generate_attachment_metadata( $image->ID, $fullsizepath );
 
     if ( is_wp_error( $metadata ) ) {
