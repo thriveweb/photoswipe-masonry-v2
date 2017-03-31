@@ -16,9 +16,6 @@ function get_script($post_id, $args, $photoswipe_options) {
   psm_gallery_<?= $post_id ?>.init();
   <?php endif; ?>
   </script>
-  <div style="width: 100%; height: 1000px;">
-
-  </div>
   <?php
   return ob_get_clean();
 }
