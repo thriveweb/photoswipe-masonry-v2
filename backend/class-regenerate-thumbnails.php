@@ -16,19 +16,35 @@ class Regenerate_Thumbnails {
   }
 
   public static function get_start_regeneration_button() {
-    if (empty($_POST['regenerate-thumbnails'])) {
-      ob_start();
+    ob_start();
+    if ((empty($_POST['regenerate-thumbnails']) && isset($_POST['show-regenerate-button'])) || (empty($_POST['regenerate-thumbnails']) && isset($_SESSION['show_regenerate_thumbnail_button']) && $_SESSION['show_regenerate_thumbnail_button'])) {
+      $_SESSION['show_regenerate_thumbnail_button'] = true;
       ?>
       <button class="button hide-if-no-js" id="rt">Regenerate All Thumbnails</button>
       <script>
-      jQuery('#rt').on('click', function(e) {
-        e.preventDefault();
-        jQuery('#rt-form input[type="submit"]').trigger('click');
+      jQuery(function($) {
+        $('#rt').on('click', function(e) {
+          e.preventDefault();
+          $('#rt-form input[type="submit"]').trigger('click');
+        });
       });
       </script>
       <?php
-      return ob_get_clean();
+    } else {
+      ?>
+      <button class="button hide-if-no-js" id="rt-stop">Abort Resizing</button>
+      <script>
+      jQuery(function($) {
+        $('#rt-stop').on('click', function(e) {
+          e.preventDefault();
+          $('#regenthumbs-stop').trigger('click');
+          $(this).html('Stopping...');
+        });
+      });
+      </script>
+      <?php
     }
+    return ob_get_clean();
   }
 
   public static function regenerate_thumbnails_log() {
@@ -62,7 +78,7 @@ class Regenerate_Thumbnails {
         <div id="regenthumbs-bar" style="position:relative;height:25px;">
           <div id="regenthumbs-bar-percent" style="position:absolute;left:50%;top:50%;width:300px;margin-left:-150px;height:25px;margin-top:-9px;font-weight:bold;text-align:center;"></div>
         </div>
-        <p><input type="button" class="button hide-if-no-js" name="regenthumbs-stop" id="regenthumbs-stop" value="<?php _e( 'Abort Resizing Images', 'regenerate-thumbnails' ) ?>" /></p>
+        <p><input type="button" class="button hide-if-no-js" name="regenthumbs-stop" id="regenthumbs-stop" value="<?php _e( 'Abort Resizing Images', 'regenerate-thumbnails' ) ?>" style="display:none;visibility:hidden;opacity:0;" /></p>
         <h3 class="title"><?php _e( 'Debugging Information', 'regenerate-thumbnails' ) ?></h3>
         <p>
           <?php printf( __( 'Total Images: %s', 'regenerate-thumbnails' ), $count ); ?><br />
@@ -192,6 +208,8 @@ class Regenerate_Thumbnails {
     $id = (int) $_REQUEST['id'];
     $image = get_post( $id );
 
+    unset($_SESSION['show_regenerate_thumbnail_button']);
+
     if ( ! $image || 'attachment' != $image->post_type || 'image/' != substr( $image->post_mime_type, 0, 6 ) ) {
       die( json_encode( array( 'error' => sprintf( __( 'Failed resize: %s is an invalid image ID.', 'regenerate-thumbnails' ), esc_html( $_REQUEST['id'] ) ) ) ) );
     }
@@ -203,7 +221,7 @@ class Regenerate_Thumbnails {
     }
 
     @set_time_limit( 900 ); // 5 minutes per image should be PLENTY
-    
+
     $metadata = wp_generate_attachment_metadata( $image->ID, $fullsizepath );
 
     if ( is_wp_error( $metadata ) ) {

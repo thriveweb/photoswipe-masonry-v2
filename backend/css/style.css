@@ -1,16 +1,26 @@
+#photoswipe_admin .wrap {
+	clear: both;
+}
+
+#photoswipe_admin .wrap::after {
+	content:"";
+	display:block;
+	clear:both;
+}
+
 #photoswipe_admin .head {
 	position: relative;
 	overflow: auto;
 	margin: 16px 0;
 	padding: 23px 10px 0;
-	padding-right: 150px
+	padding-right: 150px;
 	border: 1px solid #e5e5e5;
 	-webkit-box-shadow: 0 1px 1px rgba(0,0,0,.04);
 	box-shadow: 0 1px 1px rgba(0,0,0,.04);
 	background: #fff;
-	font-size: 13px;
+	font-size: 14px;
 	line-height: 2.1em;
-	min-height: 110px;
+	min-height: 116px;
 }
 
 #photoswipe_admin h2 {
@@ -21,7 +31,7 @@
 }
 
 #photoswipe_admin p {
-	font-size: 16px;
+	font-size: 14px;
 	margin: 0;
 	color: #72777c;
 }
@@ -64,4 +74,70 @@
 #photoswipe_admin .block.right {
 	width: 350px;
 	margin-left: 10px;
+}
+
+#photoswipe_admin .form-group {
+	width: 100%;
+	display: block;
+	position: relative;
+	padding: 5px 0;
+}
+
+#photoswipe_admin .form-group label, #photoswipe_admin .form-group input[type='text'], #photoswipe_admin .form-group input[type='number'] {
+	position: relative;
+	display: block;
+	width: 100%;
+}
+
+#photoswipe_admin .form-group label {
+	display: block;
+	font-weight: bold;
+	margin: 0 0 3px;
+	padding: 0;
+	font-size: 13px;
+}
+
+#photoswipe_admin .form-group p {
+	font-size: 13px;
+}
+
+#photoswipe_admin .form-group input[type='checkbox'] + label {
+	display: inline-block;
+	font-weight: normal;
+	width: auto;
+}
+
+#photoswipe_admin .made-by {
+	text-align: center;
+	font-size: 14px;
+	margin: 0;
+	font-weight: normal;
+	color: black;
+	opacity: .7;
+}
+
+#photoswipe_admin .made-by a {
+	color: inherit;
+	text-decoration: none;
+}
+
+#photoswipe_admin #regen-thumb {
+	display: none;
+}
+
+@media screen and (max-width: 600px) {
+	#photoswipe_admin .block.left, #photoswipe_admin .block.right {
+		float: none;
+		display: block;
+		width: 100%;
+		margin-left: 0;
+	}
+
+	#photoswipe_admin .head {
+		padding-right: 0;
+	}
+
+	#photoswipe_admin .head .logo {
+		display: none;
+	}
 }

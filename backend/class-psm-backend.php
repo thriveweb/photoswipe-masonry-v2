@@ -19,6 +19,7 @@ class Backend {
 		add_action('admin_head', array('Backend', 'set_head'));
 		add_action('save_post', array('Backend', 'photoswipe_save_post', 10, 3));
 		add_action('wp_ajax_regeneratethumbnail', array('Regenerate_Thumbnails', 'ajax_process_image'));
+		session_start();
 	}
 
 	public static function add_scripts() {
