@@ -39,10 +39,12 @@ function show_settings_view($options) {
 						</div>
 						<div class="form-group">
 							<label for="max_image_width">Max image width</label>
+							<p>Set the maximum image width for images in the full slider</p>
 							<input id="max_image_width" type="text" name="max_image_width" value="<?= ($options['max_image_width']); ?>" />
 						</div>
 						<div class="form-group">
 							<label for="max_image_height">Max image height</label>
+							<p>Set the maximum image height for images in the full slider</p>
 							<input id="max_image_height" type="text" name="max_image_height" value="<?= ($options['max_image_height']); ?>" />
 						</div>
 						<div class="form-group">

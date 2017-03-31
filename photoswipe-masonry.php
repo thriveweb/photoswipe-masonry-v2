@@ -7,6 +7,7 @@ Description: This is a image gallery plugin for WordPress built using PhotoSwipe
 Author: Thrive Web
 Author URI: http://thriveweb.com.au/
 Version: 2.0
+Developers: Dean Oakley | Vincent Weltje | Alex Frith | Eric Jinks 
 Text Domain: photoswipe-masonry
 */
 
