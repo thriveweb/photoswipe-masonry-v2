@@ -13,7 +13,7 @@ class Settings {
 		Global $psm_vars;
 		self::$photoswipe_options = &$psm_vars['photoswipe_options'];
 		add_image_size('photoswipe_thumbnails', self::$photoswipe_options['thumbnail_width'], self::$photoswipe_options['thumbnail_height'], self::$photoswipe_options['crop_thumbnails']);
-		add_image_size('photoswipe_full', self::$photoswipe_options['max_image_width'], self::$photoswipe_options['max_image_height'], self::$photoswipe_options['crop_thumbnails']);
+		add_image_size('photoswipe_full', self::$photoswipe_options['max_image_width'], self::$photoswipe_options['max_image_height'], false);
 		add_action('init', array('Settings', 'photoswipe_kses_allow_attributes'));
 	}
 
