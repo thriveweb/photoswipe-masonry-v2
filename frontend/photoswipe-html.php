@@ -9,7 +9,7 @@ function get_html($post_id, $columns, $args, $attachments = array(), $photoswipe
       $i = 0;
       foreach ($attachments as $aid => $attachment) :
         $i++;
-        $thumb = wp_get_attachment_image_src($aid , 'photoswipe_thumbnails');
+        $thumb = wp_get_attachment_image_src($aid , apply_filters( 'photoswipe_thumbnail_size', 'photoswipe_thumbnails') );
         $full = wp_get_attachment_image_src($aid , 'photoswipe_full');
         $_post = get_post($aid);
         $image_alttext = get_post_meta($aid, '_wp_attachment_image_alt', true);
