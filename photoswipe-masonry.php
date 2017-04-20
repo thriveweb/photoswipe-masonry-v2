@@ -7,7 +7,7 @@ Description: This is a image gallery plugin for WordPress built using PhotoSwipe
 Author: Thrive Web
 Author URI: http://thriveweb.com.au/
 Version: 2.0
-Developers: Dean Oakley | Vincent Weltje | Alex Frith | Eric Jinks 
+Developers: Dean Oakley | Vincent Weltje | Alex Frith | Eric Jinks
 Text Domain: photoswipe-masonry
 */
 
@@ -43,7 +43,7 @@ require_once(plugin_dir_path(__FILE__) . 'frontend/class-psm-frontend.php');
 require_once(plugin_dir_path(__FILE__) . 'includes/psm-functions.php');
 
 $psm_vars = array (
-	'plugin_url_path' => plugins_url('photoswipe-masonry'),
+	'plugin_url_path' => plugins_url( basename(__DIR__) ),
 	'photoswipe_options' => Photoswipe_Options::get_options()
 );
 
