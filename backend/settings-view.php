@@ -5,6 +5,7 @@ if ( ! defined( 'WPINC' ) ) {
 }
 
 function show_settings_view($options) {
+	Global $psm_vars;
 	ob_start();
 	echo Regenerate_Thumbnails::get_regeneration_form();
 	?>
@@ -17,7 +18,7 @@ function show_settings_view($options) {
 					Plugin by <a href="https://thriveweb.com.au/" title="Thrive Web" target="_blank">Thrive Web</a>, <a href="https://thriveweb.com.au/the-lab/" target="_blank">see our plugins</a>.
 				</p>
 				<a class="logo" href="https://thriveweb.com.au/" title="Thrive Web" target="_blank">
-					<img src="<?= plugins_url('photoswipe-masonry/thrive-logo.png') ?>" alt="Logo Thrive Web" />
+					<img src="<?= $psm_vars['plugin_url_path'] . '/thrive-logo.png' ?>" alt="Logo Thrive Web" />
 				</a>
 			</div>
 			<form method="post" action="#" enctype="multipart/form-data" id="psm-form">
