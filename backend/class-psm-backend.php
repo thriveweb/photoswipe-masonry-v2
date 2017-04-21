@@ -40,7 +40,7 @@ class Backend {
 				'crop_thumbnails' => (bool) (isset($_POST['crop_thumbnails']) ? true : false),
 				'show_controls' => (bool) (isset($_POST['show_controls']) ? true : false),
 				'show_captions' => (bool) (isset($_POST['show_captions']) ? true : false),
-				'use_masonry' => (bool) (isset($_POST['use_masonry']) ? true : false),
+				'use_masonry' => (bool) (isset($_POST['use_masonry']) ? false : true),
 				'item_count' => (int) (isset($_POST['item_count']) ? $_POST['item_count'] : false)
 			);
 			$psm_vars['photoswipe_options'] = array_merge($current_options, $options_new);
