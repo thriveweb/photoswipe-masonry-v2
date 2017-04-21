@@ -17,6 +17,10 @@ function get_style($photoswipe_options) {
     <?php endif; ?>
   }
 
+  .psgal, .psgal * {
+    box-sizing: border-box;
+  }
+
   .psgal.photoswipe_showme{
     opacity: 1;
   }

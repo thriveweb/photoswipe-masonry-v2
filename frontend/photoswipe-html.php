@@ -3,9 +3,8 @@
 function get_html($post_id, $columns, $args, $attachments = array(), $photoswipe_options = array()) {
   ob_start();
   ?>
-  <div style="clear:both"></div>
-  <div id="psgal_<?= $post_id ?>" class="psgal gallery-columns-<?= $columns ?> gallery-size-<?= sanitize_html_class($args['size']) ?>" itemscope itemtype="http://schema.org/ImageGallery" data-cropped-thumbnails="<?= $photoswipe_options['crop_thumbnails'] ? 'true' : 'false' ?>">
-    <div class="psgal_wrap">
+  <div class="psgal_wrap">
+    <div id="psgal_<?= $post_id ?>" class="psgal gallery-columns-<?= $columns ?> gallery-size-<?= sanitize_html_class($args['size']) ?>" itemscope itemtype="http://schema.org/ImageGallery" data-cropped-thumbnails="<?= $photoswipe_options['crop_thumbnails'] ? 'true' : 'false' ?>">
       <?php if (!empty($attachments)) :
         $i = 0;
         foreach ($attachments as $aid => $attachment) :
@@ -31,10 +30,8 @@ function get_html($post_id, $columns, $args, $attachments = array(), $photoswipe
         <?php endforeach;
       endif; ?>
     </div>
-    <div style='clear:both'></div>
     <button class="psgal_load_more">Load more</button>
   </div>
-  <div style='clear:both'></div>
   <?php
   return ob_get_clean();
 }

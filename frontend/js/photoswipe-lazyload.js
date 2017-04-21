@@ -16,7 +16,7 @@ var psm_gallery = function(gallery_selector, items_per_page, masonry_options) {
   }
   function init_lazyload() {
     if ((jQuery(gallery_selector + ' ' + masonry_options.itemSelector + ':last-of-type').index() + 1) > load_count) {
-      jQuery(gallery_selector + ' button.psgal_load_more').on('click', load_images);
+      jQuery(gallery_selector + ' + button.psgal_load_more').on('click', load_images);
     }
   }
   function load_images() {
@@ -28,7 +28,7 @@ var psm_gallery = function(gallery_selector, items_per_page, masonry_options) {
         images_loading = true;
         for (var i = 1; i <= items_per_page; i++) {
           if ((((load_count - 1) * items_per_page) + i) >= (jQuery(gallery_selector + ' ' + masonry_options.itemSelector + ':last-of-type').index() + 1)) {
-            jQuery(gallery_selector + ' button.psgal_load_more').fadeOut();
+            jQuery(gallery_selector + ' + button.psgal_load_more').fadeOut();
             break;
           }
           var $img = jQuery(gallery_selector + ' ' + masonry_options.itemSelector + ':nth-child(' + (last_img_nth + i) + ') a img');
@@ -42,7 +42,7 @@ var psm_gallery = function(gallery_selector, items_per_page, masonry_options) {
           }, 1000);
         });
       } else {
-        jQuery(gallery_selector + ' button.psgal_load_more').fadeOut();
+        jQuery(gallery_selector + ' + button.psgal_load_more').fadeOut();
       }
     }
   }
