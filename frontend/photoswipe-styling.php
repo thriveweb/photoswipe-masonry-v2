@@ -21,6 +21,18 @@ function get_style($photoswipe_options) {
     opacity: 1;
   }
 
+  .psgal_wrap {
+    position: relative;
+    height: 100%;
+    width: 100%;
+  }
+
+  .psgal_load_more {
+    position: relative;
+    display: block;
+    margin: 0 auto;
+  }
+
   .psgal figure {
     float: left;
     <?php if(!$photoswipe_options['use_masonry']) : ?>
