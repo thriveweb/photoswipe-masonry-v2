@@ -35,7 +35,7 @@ function get_style($photoswipe_options) {
   }
 
   .psgal a{
-    display: block;
+    display: inline-block;
   }
 
   .psgal img {
