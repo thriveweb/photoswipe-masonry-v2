@@ -1,5 +1,5 @@
 === Photoswipe Masonry Gallery ===
-Contributors: deanoakley
+Contributors: deanoakley, vweltje
 Author: Web Design Gold Coast
 Author URI: http://thriveweb.com.au/
 Plugin URI: http://thriveweb.com.au/the-lab/photoswipe/
