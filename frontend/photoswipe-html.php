@@ -4,7 +4,7 @@ function get_html($post_id, $columns, $args, $attachments = array(), $photoswipe
   ob_start();
   ?>
   <div style="clear:both"></div>
-  <div id="psgal_<?= $post_id ?>" class="psgal gallery-columns-<?= $columns ?> gallery-size-<?= sanitize_html_class($args['size']) ?>" itemscope itemtype="http://schema.org/ImageGallery">
+  <div id="psgal_<?= $post_id ?>" class="psgal gallery-columns-<?= $columns ?> gallery-size-<?= sanitize_html_class($args['size']) ?>" itemscope itemtype="http://schema.org/ImageGallery" data-cropped-thumbnails="<?= $photoswipe_options['crop_thumbnails'] ? 'true' : 'false' ?>">
     <?php if (!empty($attachments)) :
       $i = 0;
       foreach ($attachments as $aid => $attachment) :

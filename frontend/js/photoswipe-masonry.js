@@ -12,6 +12,7 @@ var photoswipe_masonry = function($){
 	$('.psgal').each( function() {
 
 		var $pic     = $(this),
+		croppedImages = $(this).data('cropped-thumbnails'),
 		getItems = function() {
 			var items = [];
 			$pic.find('a').each(function() {
@@ -48,7 +49,15 @@ var photoswipe_masonry = function($){
 				getThumbBoundsFn: function(index) {
 					var image = items[index].el.find('img'),
 					offset = image.offset();
-					return {x:offset.left, y:offset.top, w:image.width()};
+					return (!croppedImages ? {
+						x:offset.left,
+						y:offset.top,
+						w:image.width()
+					} : {
+						x: offset.left + (image.width() / 2),
+						y: offset.top + (image.height() / 2),
+						w: 0
+					});
 				}
 			}
 
@@ -64,6 +73,7 @@ var photoswipe_masonry = function($){
 	$('.single_photoswipe').each( function() {
 
 		var $pic     = $(this),
+		croppedImages = $(this).data('cropped-thumbnails'),
 		getItems = function() {
 			var items = [];
 			$pic.each(function() {
@@ -100,7 +110,15 @@ var photoswipe_masonry = function($){
 				getThumbBoundsFn: function(index) {
 					var image = items[index].el.find('img'),
 					offset = image.offset();
-					return {x:offset.left, y:offset.top, w:image.width()};
+					return (!croppedImages ? {
+						x:offset.left,
+						y:offset.top,
+						w:image.width()
+					} : {
+						x: offset.left + (image.width() / 2),
+						y: offset.top + (image.height() / 2),
+						w: 0
+					});
 				}
 			}
 
@@ -119,6 +137,7 @@ var photoswipe_masonry = function($){
 		$('#' + hashData.gid).each( function() {
 
 			var $pic     = $(this),
+			croppedImages = $(this).data('cropped-thumbnails'),
 			getItems = function() {
 
 				var items = [];
@@ -153,7 +172,15 @@ var photoswipe_masonry = function($){
 				getThumbBoundsFn: function(index) {
 					var image = items[index].el.find('img'),
 					offset = image.offset();
-					return {x:offset.left, y:offset.top, w:image.width()};
+					return (!croppedImages ? {
+						x:offset.left,
+						y:offset.top,
+						w:image.width()
+					} : {
+						x: offset.left + (image.width() / 2),
+						y: offset.top + (image.height() / 2),
+						w: 0
+					});
 				}
 			}
 
