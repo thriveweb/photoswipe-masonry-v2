@@ -37,7 +37,6 @@ var photoswipe_masonry = function($){
 		var items = getItems();
 
 		$pic.on('click', 'figure', function(event) {
-
 			event.preventDefault();
 			var $index = $(this).index();
 			var options = {
@@ -49,11 +48,7 @@ var photoswipe_masonry = function($){
 				getThumbBoundsFn: function(index) {
 					var image = items[index].el.find('img'),
 					offset = image.offset();
-					return {
-						x: offset.left + (image.width() / 2),
-						y: offset.top + (image.height() / 2),
-						w: 0
-					};
+					return {x:offset.left, y:offset.top, w:image.width()};
 				}
 			}
 
@@ -105,11 +100,7 @@ var photoswipe_masonry = function($){
 				getThumbBoundsFn: function(index) {
 					var image = items[index].el.find('img'),
 					offset = image.offset();
-					return {
-						x: offset.left + (image.width() / 2),
-						y: offset.top + (image.height() / 2),
-						w: 0
-					};
+					return {x:offset.left, y:offset.top, w:image.width()};
 				}
 			}
 
@@ -162,11 +153,7 @@ var photoswipe_masonry = function($){
 				getThumbBoundsFn: function(index) {
 					var image = items[index].el.find('img'),
 					offset = image.offset();
-					return {
-						x: offset.left + (image.width() / 2),
-						y: offset.top + (image.height() / 2),
-						w: 0
-					};
+					return {x:offset.left, y:offset.top, w:image.width()};
 				}
 			}
 
