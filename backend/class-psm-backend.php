@@ -48,7 +48,7 @@ class Backend {
 		} else {
 			Photoswipe_Options::get_options();
 		}
-		add_submenu_page( 'options-general.php', 'PhotoSwipe options', 'PhotoSwipe', 'edit_theme_options', basename(__FILE__), array('Backend', 'display'));
+		add_submenu_page( 'options-general.php', 'PhotoSwipe options', 'PhotoSwipe', apply_filters( 'photoswipe_menu_capability', 'edit_theme_options' ), basename(__FILE__), array('Backend', 'display'));
 	}
 
 	public static function display() {
