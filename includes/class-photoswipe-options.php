@@ -23,6 +23,8 @@ class Photoswipe_Options {
 				'crop_thumbnails' => false
 			);
 			update_option('photoswipe_options', $options);
+		}else if ( !isset( $options['crop_thumbnails'] ) ){
+			$options['crop_thumbnails'] = false; //hides notice on upgrade
 		}
 		return $options;
 	}
