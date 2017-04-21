@@ -54,7 +54,7 @@ function show_settings_view($options) {
 						</div>
 						<div class="form-group" id="regen-thumb" <?= ((empty($_POST['regenerate-thumbnails']) && isset($_POST['show-regenerate-button'])) || (isset($_SESSION['show_regenerate_thumbnail_button']) && $_SESSION['show_regenerate_thumbnail_button'])) ? 'style="display:block"' : '' ?>>
 							<label for="rt">Thumbnail size changed!</label>
-							<p>We reccomand you to regenerate your thumbnails te get te best result.</p>
+							<p>We recommend you to regenerate your thumbnails to get the best result.</p>
 							<?php
 							echo Regenerate_Thumbnails::get_start_regeneration_button();
 							?>
@@ -79,8 +79,8 @@ function show_settings_view($options) {
 							<label for="show_captions">Show captions on thumbnails</label>
 						</div>
 						<div class="form-group">
-							<input id="use_masonry" name="use_masonry" type="checkbox" value="checkbox" <?= $options['use_masonry'] ? "checked='checked'" : '' ?> />
-							<label for="use_masonry">Use Masonry</label>
+							<input id="use_masonry" name="use_masonry" type="checkbox" value="checkbox" <?= !$options['use_masonry'] ? "checked='checked'" : '' ?> />
+							<label for="use_masonry">Don't use Masonry</label>
 						</div>
 						<div class="form-group">
 							<input class="button-primary" type="submit" name="photoswipe_save" value="Save Changes" />
