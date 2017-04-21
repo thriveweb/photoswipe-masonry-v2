@@ -1,6 +1,6 @@
 === Photoswipe Masonry Gallery ===
 Contributors: deanoakley
-Author: Thrive Web
+Author: Web Design Gold Coast
 Author URI: http://thriveweb.com.au/
 Plugin URI: http://thriveweb.com.au/the-lab/photoswipe/
 Developers: Dean Oakley | Vincent Weltje | Alex Frith | Eric Jinks
