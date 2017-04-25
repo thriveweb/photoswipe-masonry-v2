@@ -30,32 +30,32 @@ function show_settings_view($options) {
 					<div class="block-content">
 						<div class="form-group">
 							<label for="thumbnail_width">Thumbnail Width</label>
-							<p>Set the width of the grid thumbnails</p>
+							<p>In pixels</p>
 							<input id="thumbnail_width" type="text" name="thumbnail_width" value="<?= ($options['thumbnail_width']); ?>" />
 						</div>
 						<div class="form-group">
 							<label for="thumbnail_height">Thumbnail Height</label>
-							<p>Set the height of the grid thumbnails</p>
+							<p>In pixels.</p>
 							<input id="thumbnail_height" type="text" name="thumbnail_height" value="<?= ($options['thumbnail_height']); ?>" />
 						</div>
 						<div class="form-group">
 							<label for="max_image_width">Max image width</label>
-							<p>Set the maximum image width for images in the full slider</p>
+							<p>Width of images at full size in pixels</p>
 							<input id="max_image_width" type="text" name="max_image_width" value="<?= ($options['max_image_width']); ?>" />
 						</div>
 						<div class="form-group">
 							<label for="max_image_height">Max image height</label>
-							<p>Set the maximum image height for images in the full slider</p>
+							<p>Height of images at full size in pixels</p>
 							<input id="max_image_height" type="text" name="max_image_height" value="<?= ($options['max_image_height']); ?>" />
 						</div>
 						<div class="form-group">
 							<label for="item_count">Thumbnails per page</label>
-							<p>How many thumbnails would you like to load on each page</p>
+							<p>If you have more a load more than this a load more button will appear</p>
 							<input id="item_count" name="item_count" type="number" value="<?= $options['item_count'] ? $options['item_count'] : 10 ?>" max="500" />
 						</div>
 						<div class="form-group" id="regen-thumb" <?= ((empty($_POST['regenerate-thumbnails']) && isset($_POST['show-regenerate-button'])) || (isset($_SESSION['show_regenerate_thumbnail_button']) && $_SESSION['show_regenerate_thumbnail_button'])) ? 'style="display:block"' : '' ?>>
 							<label for="rt">Thumbnail size changed!</label>
-							<p>We recommend you to regenerate your thumbnails to get the best result.</p>
+							<p>We recommend you to regenerate your thumbnails when you change your image sizes.</p>
 							<?php
 							echo Regenerate_Thumbnails::get_start_regeneration_button();
 							?>
