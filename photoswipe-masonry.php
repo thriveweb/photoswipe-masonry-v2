@@ -1,17 +1,16 @@
 <?php
 /*
-Plugin Name: Photoswipe Masonry
-Plugin URI: http://thriveweb.com.au/the-lab/photoswipe/
-Description: This is a image gallery plugin for WordPress built using PhotoSwipe from  Dmitry Semenov.
-<a href="http://photoswipe.com/">PhotoSwipe</a>
-Author: Thrive Web
+Plugin Name: PhotoSwipe Masonry 2.0
+Plugin URI: http://thriveweb.com.au/the-lab/photoswipe-v2
+Description: This is a image gallery plugin for WordPress built using PhotoSwipe from  Dmitry Semenov (http://photoswipe.com)
+Author: Thrive Web Design
 Author URI: http://thriveweb.com.au/
 Version: 2.0
-Developers: Dean Oakley | Vincent Weltje | Alex Frith | Eric Jinks
+Developers: Dean Oakley | Vincent Weltje | Alex Frith | Eric Jinks | Samantha Scott
 Text Domain: photoswipe-masonry
 */
 
-/*  Copyright 2017  Thrive Web  (email : contact@thriveweb.com.au)
+/*  Copyright 2018  Thrive Web Design  (email : contact@thriveweb.com.au)
 
 This program is free software; you can redistribute it and/or modify
 it under the terms of the GNU General Public License, version 2, as
