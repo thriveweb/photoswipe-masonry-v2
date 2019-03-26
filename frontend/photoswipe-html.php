@@ -30,7 +30,9 @@ function get_html($post_id, $columns, $args, $attachments = array(), $photoswipe
         <?php endforeach;
       endif; ?>
     </div>
+
     <button class="psgal_load_more">Load more</button>
+
   </div>
   <?php
   return ob_get_clean();

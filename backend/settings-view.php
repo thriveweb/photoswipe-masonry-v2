@@ -12,13 +12,13 @@ function show_settings_view($options) {
 	<div id="photoswipe_admin">
 		<div class="wrap">
 			<div class="head">
-				<h2>PhotoSwipe Masonry Options</h2>
+				<h2>PhotoSwipe Masonry 2.0 Options</h2>
 				<p class="info">
-					PhotoSwipe Masonry is a image gallery plugin for WordPress built using PhotoSwipe from Dmitry Semenov. <a href="http://photoswipe.com/" target="_blank">PhotoSwipe</a><br />
+					PhotoSwipe Masonry 2.0 is a image gallery plugin for WordPress built using PhotoSwipe from Dmitry Semenov. <a href="http://photoswipe.com/" target="_blank">PhotoSwipe</a><br />
 					Plugin by <a href="https://thriveweb.com.au/" title="Thrive Web" target="_blank">Thrive Web</a>, <a href="https://thriveweb.com.au/the-lab/" target="_blank">see our plugins</a>.
 				</p>
 				<a class="logo" href="https://thriveweb.com.au/" title="Thrive Web" target="_blank">
-					<img src="<?= $psm_vars['plugin_url_path'] . '/thrive-logo.png' ?>" alt="Logo Thrive Web" />
+					<img src="<?= $psm_vars['plugin_url_path'] . '/thrive-logo.png' ?>" alt="Logo Thrive Web" width="100" height="100"/>
 				</a>
 			</div>
 			<form method="post" action="#" enctype="multipart/form-data" id="psm-form">

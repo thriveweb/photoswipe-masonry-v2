@@ -15,9 +15,16 @@ var psm_gallery = function(gallery_selector, items_per_page, masonry_options) {
     });
   }
   function init_lazyload() {
+
     if ((jQuery(gallery_selector + ' ' + masonry_options.itemSelector + ':last-of-type').index() + 1) > load_count) {
       jQuery(gallery_selector + ' + button.psgal_load_more').on('click', load_images);
     }
+    
+    // hide load more button if we don't need it
+    if ( jQuery(gallery_selector + ' ' + masonry_options.itemSelector).length < items_per_page ){
+        jQuery('button.psgal_load_more').hide();
+    }
+
   }
   function load_images() {
     if (!images_loading) {
