@@ -1,6 +1,6 @@
-/*! PhotoSwipe Default UI - 4.1.1 - 2015-12-24
+/*! PhotoSwipe Default UI - 4.1.3 - 2019-01-08
 * http://photoswipe.com
-* Copyright (c) 2015 Dmitry Semenov; */
+* Copyright (c) 2019 Dmitry Semenov; */
 /**
 *
 * UI on top of main sliding area (caption, arrows, close button, etc.).
@@ -77,9 +77,8 @@ var PhotoSwipeUI_Default =
 			clickToCloseNonZoomable: true,
 
 			shareButtons: [
-				
-				{id:'facebook', label:'Share on Facebook', url:'https://www.facebook.com/sharer/sharer.php?u={{url}}&picture={{raw_image_url}}&description={{text}}'},
-				/*{id:'twitter', label:'Tweet', url:'https://twitter.com/intent/tweet?text={{text}}&url={{url}}'},*/
+				{id:'facebook', label:'Share on Facebook', url:'https://www.facebook.com/sharer/sharer.php?u={{url}}'},
+				{id:'twitter', label:'Tweet', url:'https://twitter.com/intent/tweet?text={{text}}&url={{url}}'},
 				{id:'pinterest', label:'Pin it', url:'http://www.pinterest.com/pin/create/button/'+
 													'?url={{url}}&media={{image_url}}&description={{text}}'},
 				{id:'download', label:'Download image', url:'{{raw_image_url}}', download:true}
